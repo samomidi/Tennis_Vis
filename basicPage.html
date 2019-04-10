@@ -1,0 +1,136 @@
+<html lang="en">
+
+	<head>
+		
+		<!-- we want to use D3, so this is where the D3 library version 5 gets called-->
+		<script src="https://d3js.org/d3.v5.js"></script>
+		
+		<!--title of the web-page-->
+		<title> D3 Tutorial </title>
+
+		<style>
+			p{
+				font-family: sans-serif;
+				color: grey;
+			}
+			div{
+				width: 100%;
+				height: 100%;
+			}
+			svg{
+				width: 100%;
+				height: 100%;
+			}
+			rect{
+				fill: gold;
+				stroke: #999999;
+				stroke-width: 2px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+	
+		<!-- simple text heading-->
+		<h2>D3 Sandbox</h2>
+
+		<div id="originalDiv">
+		</div>
+
+		<div id="myDiv">
+			<svg>
+
+			</svg>
+		</div>
+
+		<script>
+			const dataPath = "data/authors.csv";
+
+			d3.csv(dataPath)
+					.then(function(data) {
+						console.log(data);
+
+						let myData = data;
+
+						// Make an extent to get a min and max
+						const booksExtent = d3.extent(myData, function(d) {
+							return parseInt(d["books"]);
+						});
+						console.log(booksExtent);
+
+						// Make a scale between minFont and maxFont based on that
+						let minFont = 8;
+						let maxFont = 16;
+						let scale = d3.scaleLinear()
+								.range([minFont, maxFont])
+								.domain(booksExtent);
+
+
+						d3.select("#originalDiv")
+								.selectAll("p") // select all paragraph elements
+								.data(myData) // link all paragraph elements to my data
+								.enter() //not enough paragraph elements for each data point?
+								.append("p") // create a new paragraph element
+								.text(function(d) {  // for each d (data element)
+									return d["author"]; // read the "author" column
+								}) // print out a specific text
+								.style("font-size", function(d) { // make size scaled to number of books
+									return scale(parseInt(d["books"])) + "pt";
+								});
+
+						// Making bar chart
+						d3.select("#myDiv")
+								.select("svg")
+								.selectAll("rect")
+								.data(myData)
+								.enter()
+								.append("rect")
+									.attr("width", function(d) {
+										return d["books"] * 10;
+									})
+									.attr("height", 20)
+									.attr("x", 50)
+									.attr("y", function(d, i) { // i in the index
+										return i*50 + 50;
+									})
+								.on("mouseenter", function(d, i) {
+									d3.select(this)
+											.transition()
+											.duration(200)
+											.style("fill", "#FF9C00");
+									d3.select("svg")
+											.append("text")
+											.attr("class", "tooltip")
+											.attr("x", 50 + 10 + d["books"]*10)
+											.attr("y", (i*50 + 50 + 15))
+											.text(d["author"] + ": " + d["books"] + " book")
+								})
+								.on("mouseout", function() {
+									d3.select(this)
+											.transition()
+											.duration(200)
+											.style("fill", "gold");
+									d3.selectAll(".tooltip")
+											.remove();
+								});
+
+						d3.select("#myDiv")
+								.select("svg")
+								.selectAll("text")
+								.data(myData)
+								.enter()
+								.append("text")
+								.attr("x", 20)
+								.attr("y", function(d,i) {
+									return i*50 + 45;
+								})
+								.text(function(d) {
+									return d["author"];
+								});
+					});
+		</script>
+	
+	</body>
+
+</html>
