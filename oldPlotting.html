@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    const namePath = "data/names.csv";
+
+    // Getting names
+    let name_dict = {};
+    d3.csv(namePath)
+        .then(function(data) {
+
+            data.forEach(function(d) {
+                name_dict[d["ID"]] = d["Name"];
+            });
+        });
+
+    // Make plot from filtered data
+    d3.csv(namePath)
+        .then(function(data) {
+            d3.select("#myDiv")
+                .select("svg")
+                .selectAll('rect')
+                .data(data)
+                .enter()
+                .append('rect')
+                .attr("width", function(d) {
+                    let id = d["ID"];
+                    let wins = 0;
+                    let losses = 0;
+                    d3.csv(dataPath).then(function(data) {
+                        wins = data.filter(function(x) {return x["winner_id"] === id}).length;
+                        console.log(wins, "wins");
+                    });
+                    console.log(wins, "wins");
+                    d3.csv(dataPath).then(function(data) {
+                        losses = data.filter(function(x) {return x["loser_id"] === id}).length;
+                    });
+                    console.log(wins, " wins, ", losses, " losses - ", d["Name"]);
+                    if (losses === 0) {
+                        console.log("undefeated", d["Name"]);
+                        return 100;
+                    }
+                    else {
+                        console.log(wins/losses, d["Name"]);
+                        return (wins/losses)*100
+                    }
+                })
+                .attr("height", 20)
+                .attr("x", 50)
+                .attr("y", function(d, i) { // i in the index
+                    return i*50 + 50;
+                });
+
+            d3.select("#myDiv")
+                .select("svg")
+                .selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("x", 20)
+                .attr("y", function(d,i) {
+                    return i*50 + 45;
+                })
+                .text(function(d) {
+                    return d["Name"];
+                });
+        });
+</script>
+
+</body>
+</html>
