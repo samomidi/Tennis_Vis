@@ -1,0 +1,42 @@
+If we finish everything else, can try adding more players
+
+First - Overview
+	Views:
+	Details about visualization
+	Greatest of all time
+	Number of tournaments per year
+	Most common surfaces
+	Wins as server vs wins as receiver
+	Most improved player
+	Histogram of match lengths
+	Most golds/silvers/bronzes
+	Longest tournaments
+	
+Second - Focus Player
+	Views:
+	Details about Player
+	Best and worst opponents
+	Best and worst tournaments
+	Best and worst periods
+	Good at receiving vs serving
+	Average game time
+	Surface comparisons
+
+Third - Focus Tournament (on specific year?)
+	Views:
+	Details about tournament	
+	Best players
+	Match lengths
+	Home advantage? (Like how well people of the nationality of people matching the tournament's location perform)
+	Wins are server vs wins as receiver
+		
+Fourth - Focus Nationality vs Nationality
+	Views:
+	Best players
+	Match Lengths
+	Tournament clashes	
+
+
+Make a tab for each of these (Overview, Focus Player, Focus tournament, Focus Nationality vs nationality)
+Each tab has 4 svg elements, top-left is always text. Other three have toggles to decide which view to show
+	
