@@ -1,5 +1,12 @@
 If we finish everything else, can try adding more players
 
+TODO:
+	Make dropdown buttons scroll
+	Make dropdown buttons activate javascript
+	Fill in descriptions with something meaningful
+	Make button activated javascript make visualizations
+	?Work out how to scroll visualizations made by d3?
+
 First - Overview
 	Views:
 	Details about visualization
