@@ -6,17 +6,17 @@ function winPercentBarChart(data) {
     let current_index = 0;
 
     // Filling name_dict
-    data.forEach(function(d) {
+    data.forEach(function (d) {
         if (d["winner_id"] in ids_done) {
             let id = ids_done[d["winner_id"]];
             name_stats[id]["Wins"]++;
-        }
-        else {
+        } else {
             let new_player = {
-                "ID":d["winner_id"],
-                "Name":d["winner_name"],
-                "Wins":1,
-                "Losses":0
+                "ID": d["winner_id"],
+                "Name": d["winner_name"],
+                "Age":d["winner_age"],
+                "Wins": 1,
+                "Losses": 0
             };
             name_stats.push(new_player);
             ids_done[d["winner_id"]] = current_index;
@@ -26,13 +26,13 @@ function winPercentBarChart(data) {
         if (d["loser_id"] in ids_done) {
             let id = ids_done[d["loser_id"]];
             name_stats[id]["Losses"]++;
-        }
-        else {
+        } else {
             let new_player = {
-                "ID":d["loser_id"],
-                "Name":d["loser_name"],
-                "Wins":0,
-                "Losses":1
+                "ID": d["loser_id"],
+                "Name": d["loser_name"],
+                "Age":d["winner_age"],
+                "Wins": 0,
+                "Losses": 1
             };
             name_stats.push(new_player);
             ids_done[d["loser_id"]] = current_index;
@@ -43,49 +43,47 @@ function winPercentBarChart(data) {
 
     console.log(name_stats);
 
-    name_stats.forEach(function(d) {
-        d["WinPercent"] = d["Wins"]/(d["Wins"]+d["Losses"]);
+    name_stats.forEach(function (d) {
+        d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
     });
+}
 
-    // Making bar chart
-    d3.select("#myDiv")
-        .select("svg")
-        .selectAll("rect")
-        .data(name_stats)
+var filterText = "Roger Federer";
+
+function PlayerDetails(data) {
+
+    // let name_stats = [];
+    // let ids_done = {};
+    // // let current_index = 0;
+
+    // data.forEach(function(d) {
+    //     if (d["winner_name"] === filterText) {
+    //
+    //      console.log(d["winner_name"] )
+    //
+    //     }
+    //
+    //     })
+    var values = d3.keys(data[0]);
+
+    var select = d3.select("body")
+        .append("select")
+        .on("change", function() {
+            console.log(this.value);
+        })
+
+    select.append("option")
+        .html("Select Player:")
+
+    var options = select.selectAll(null)
+        .data(values)
         .enter()
-        .append("rect")
-        .attr("width", function(d) {
-            return d["WinPercent"] * 1000;
-        })
-        .attr("height", 20)
-        .attr("x", 50)
-        .attr("y", function(d, i) { // i in the index
-            return i*50 + 50;
-        })
-        .on("mouseenter", function(d, i) {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .style("fill", "#FF9C00");
-            d3.select("svg")
-                .append("text")
-                .attr("class", "tooltip")
-                .attr("x", 50 + 10 + d["WinPercent"]*10)
-                .attr("y", (i*50 + 50 + 15))
-                .text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
-        })
-        .on("mouseout", function() {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .style("fill", "gold");
-            d3.selectAll(".tooltip")
-                .remove();
-        });
+        .append("option")
+        .text(function(d) { return d; });
+
 
 }
 
+d3.csv(dataPath).then(function(data) {PlayerDetails(data)});
 d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
-
-
 
