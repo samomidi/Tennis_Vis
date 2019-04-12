@@ -7,5 +7,7 @@
     <orderEntry type="library" name="d3.v5" level="application" />
     <orderEntry type="library" name="d3-array.v2" level="application" />
     <orderEntry type="library" name="d3.v3" level="application" />
+    <orderEntry type="library" name="d3.v5" level="application" />
+    <orderEntry type="library" name="d3-array.v2" level="application" />
   </component>
 </module>

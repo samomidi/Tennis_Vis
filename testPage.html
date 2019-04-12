@@ -2,138 +2,83 @@
 
 	<head>
 		
-		<!-- we want to use D3, so this is where the D3 library version 5 gets called-->
+		<!-- Calling D3 libraries-->
 		<script src="https://d3js.org/d3.v5.js"></script>
 		<script src="https://d3js.org/d3-array.v2.min.js"></script>
+		<!-- Calling own files-->
+		<link rel="stylesheet" href="styles.css">
+		<script src="script.js"></script>
 		<!--title of the web-page-->
-		<title> D3 Tutorial </title>
-
-		<style>
-			p{
-				font-family: sans-serif;
-				color: grey;
-			}
-			div{
-				width: 100%;
-				height: 100%;
-			}
-			svg{
-				width: 100%;
-				height: 100%;
-			}
-			rect{
-				fill: gold;
-				stroke: #999999;
-				stroke-width: 2px;
-			}
-		</style>
-
+		<title> CS5044 Practical 3 - Tennis </title>
 	</head>
 
 	<body>
 	
 		<!-- simple text heading-->
-		<h2>D3 Sandbox</h2>
+		<h2>Tennis Stats</h2>
+		<div class="tab">
+			<button class="tab-link" id="default-tab" onclick="openTab(event, 'overview')">Overview</button>
+			<button class="tab-link" onclick="openTab(event, 'player-view')">Player view</button>
+			<button class="tab-link" onclick="openTab(event, 'tournament-view')">Tournament view</button>
+			<button class="tab-link" onclick="openTab(event, 'nationality-view')">Nationality view</button>
+		</div>
+		<div id="overview" class="vis-screen">
+			<div data-testid="1" class="vis-panel-description" style="grid-area: 1/ 1/ 2/ 2;">
+				<p> Welcome to our visualisation.</p>
+			</div>
+			<div data-panelid="2" class="vis-panel" style="grid-area: 2/ 1/ 3/ 2;">
+				<div class="dropdown">
+					<button onclick="showDropdown(this.parentElement)" class="drop-button">Choose visualisation</button>
+					<div class="dropdown-content">
+						<button onclick="" class="dropdown-button">Test 1</button>
+						<button onclick="" class="dropdown-button">Test 2</button>
+					</div>
+				</div>
+			</div>
+			<div data-panelid="3" class="vis-panel" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div data-panelid="4" class="vis-panel" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div id="player-view" class="vis-screen">
+			<div data-panelid="1" class="vis-panel-description" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div data-panelid="2" class="vis-panel" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div data-panelid="3" class="vis-panel" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div data-panelid="4" class="vis-panel" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div id="tournament-view" class="vis-screen">
+			<div data-panelid="1" class="vis-panel-description" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div data-panelid="2" class="vis-panel" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div data-panelid="3" class="vis-panel" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div data-panelid="4" class="vis-panel" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div id="nationality-view" class="vis-screen">
+			<div data-panelid="1" class="vis-panel-description" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div data-panelid="2" class="vis-panel" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div data-panelid="3" class="vis-panel" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div data-panelid="4" class="vis-panel" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+
 		<div id="myDiv">
 			<svg>
 
 			</svg>
 		</div>
-
-		<script>
-			const dataPath = "data/three_years.csv";
-
-			function winPercentBarChart(data) {
-				let name_stats = [];
-				let ids_done = {};
-				let current_index = 0;
-
-				// Filling name_dict
-				data.forEach(function(d) {
-					if (d["winner_id"] in ids_done) {
-						let id = ids_done[d["winner_id"]];
-						name_stats[id]["Wins"]++;
-					}
-					else {
-						let new_player = {
-							"ID":d["winner_id"],
-							"Name":d["winner_name"],
-							"Wins":1,
-							"Losses":0
-						};
-						name_stats.push(new_player);
-						ids_done[d["winner_id"]] = current_index;
-						current_index++;
-					}
-
-					if (d["loser_id"] in ids_done) {
-						let id = ids_done[d["loser_id"]];
-						name_stats[id]["Losses"]++;
-					}
-					else {
-						let new_player = {
-							"ID":d["loser_id"],
-							"Name":d["loser_name"],
-							"Wins":0,
-							"Losses":1
-						};
-						name_stats.push(new_player);
-						ids_done[d["loser_id"]] = current_index;
-						current_index++;
-					}
-				});
-
-
-				console.log(name_stats);
-
-				name_stats.forEach(function(d) {
-					d["WinPercent"] = d["Wins"]/(d["Wins"]+d["Losses"]);
-				});
-
-				// Making bar chart
-				d3.select("#myDiv")
-						.select("svg")
-						.selectAll("rect")
-						.data(name_stats)
-						.enter()
-						.append("rect")
-						.attr("width", function(d) {
-							return d["WinPercent"] * 1000;
-						})
-						.attr("height", 20)
-						.attr("x", 50)
-						.attr("y", function(d, i) { // i in the index
-							return i*50 + 50;
-						})
-						.on("mouseenter", function(d, i) {
-							d3.select(this)
-									.transition()
-									.duration(200)
-									.style("fill", "#FF9C00");
-							d3.select("svg")
-									.append("text")
-									.attr("class", "tooltip")
-									.attr("x", 50 + 10 + d["WinPercent"]*10)
-									.attr("y", (i*50 + 50 + 15))
-									.text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
-						})
-						.on("mouseout", function() {
-							d3.select(this)
-									.transition()
-									.duration(200)
-									.style("fill", "gold");
-							d3.selectAll(".tooltip")
-									.remove();
-						});
-
-			}
-
-			d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
-
-
-
-		</script>
-	
 	</body>
+
+	<script>document.getElementById("default-tab").click();</script>
+
 
 </html>
