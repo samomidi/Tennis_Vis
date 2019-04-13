@@ -51,83 +51,76 @@ function winPercentBarChart(data) {
     return name_stats;
 }
 
-var filterText = "Roger Federer";
+// var filterText = "Roger Federer";
+//
+// function PlayerDetails(players) {
+//
+//     // let name_stats = [];
+//     // let ids_done = {};
+//     // // let current_index = 0;
+//
+//     // data.forEach(function(d) {
+//     //     if (d["winner_name"] === filterText) {
+//     //
+//     //      console.log(d["winner_name"] )
+//     //
+//     //     }
+//     //
+//     //     })
+//
+//     var values = d3.keys(name_stats);
+//
+//     // var values = d3.keys(players);
+//
+//     console.log(name_stats[0].Name)
+//
+//     console.log(d3.values(name_stats).Wins)
+//
+//
+//
+//
+//
+//     var select = d3.select("body")
+//         .append("select")
+//         .on("change", function() {
+//             console.log(this.value);
+//         });
+//
+//     select.append("option")
+//         .html("Select Player:");
+//
+//     var options = select.selectAll(null)
+//         .data(values)
+//         .enter()
+//         .append("option")
+//         .text(function(d) { return d; });
+//
+//     var svg = d3.select("body")
+//         .append("svg")
+//         .attr("width", 500)
+//         .attr("height", 400);
+//
+//
+//
+// }
+//
+// players = d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
+// d3.csv(dataPath).then(function(data) {PlayerDetails(players)});
 
-function PlayerDetails(players) {
-
-    // let name_stats = [];
-    // let ids_done = {};
-    // // let current_index = 0;
-
-    // data.forEach(function(d) {
-    //     if (d["winner_name"] === filterText) {
-    //
-    //      console.log(d["winner_name"] )
-    //
-    //     }
-    //
-    //     })
-
-    var values = d3.keys(name_stats);
-
-    // var values = d3.keys(players);
-
-    console.log(name_stats[0].Name)
-
-    console.log(d3.values(name_stats).Wins)
-
-
-
-
-
-    var select = d3.select("body")
-        .append("select")
-        .on("change", function() {
-            console.log(this.value);
-        });
-
-    select.append("option")
-        .html("Select Player:");
-
-    var options = select.selectAll(null)
-        .data(values)
-        .enter()
-        .append("option")
-        .text(function(d) { return d; });
-
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", 500)
-        .attr("height", 400);
-
-
-    // var x = d3.scaleBand()
-    //     .domain(data.map(function(d) { return d.winner_name; }))
-    //     .range([0,500])
-
-    // var y = d3.scaleLinear()
-    //     .domain([0,100])
-    //     .range([150,0])
-
-    function update() {
-        var value = this.value;
-        var bars = svg.selectAll("rect")
-            .data(data);
-
-        bars.enter().append("rect")
-            .attr("x", function(d) { return x(d.winner_name); })
-            .attr("width", x.bandwidth())
-            .attr("y", 150)
-            .attr("height",0)
-            .merge(bars)
-            .transition()
-            .attr("height", function(d) { return 150 - y(d[value] || 0); })
-            .attr("y", function(d) { return y(d[value] || 0); });
-
-    }
-}
-
-players = d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
-d3.csv(dataPath).then(function(data) {PlayerDetails(players)});
+var svg = dimple.newSvg("#myDiv1", 800, 600);
+// var data = [
+//     { "Word":"Hello", "Awesomeness":2000 },
+//     { "Word":"World", "Awesomeness":3000 }
+// ];
+d3.csv('data/atp_matches_2018.csv', function (data) {
 
 
+
+var chart = new dimple.chart(svg, data);
+chart.addCategoryAxis("x", "surface");
+
+// chart.addMeasureAxis("y", "Awesomeness");
+chart.addPctAxis("y","count");
+chart.addSeries(null, dimple.plot.bar);
+chart.draw();
+});
