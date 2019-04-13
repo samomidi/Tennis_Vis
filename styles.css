@@ -24,7 +24,7 @@
     background-color: #ccc;
 }
 /* Visualization screen and panels */
-.vis-screen{
+.visgrid{
     display: none;
     grid-gap: 7px;
     grid-auto-columns: 50%;
@@ -34,25 +34,32 @@
     width:calc(100% - 7px);
     height: calc(100% - 100px);
 }
-.vis-screen__panel{
+.visgrid__panel{
     position: relative;
     background-color: #dddddd;
+    overflow: scroll;
 }
-.vis-screen__panel--description{
+.visgrid__panel--description{
     background-color: #eeeeee;
 }
 
 /* Dropdown menus */
-.dropdown{
-    position: relative;
+.visgrid__dropdown-menu{
+    position: static;
     display: inline-block;
     opacity: 0.3;
 }
-.dropdown:hover, .dropdown:focus {
-    opacity: 1;
+
+.visgrid__dropdown-menu button{
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
 }
 
-.dropdown-content{
+.visgrid__dropdown-content{
     display: none;
     position: absolute;
     background-color: #f1f1f1;
@@ -61,27 +68,19 @@
     z-index: 1;
 }
 
-.dropdown-content button {
+.visgrid__dropdown-content button {
+    background-color: #999999;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
+.visgrid__dropdown-menu button:hover, .visgrid__dropdown-menu button:focus {background-color: #2980B9; }
+.visgrid__dropdown-menu:hover, .visgrid__dropdown-menu:focus {opacity: 1; }
+.visgrid__dropdown--show {display: block; }
 
-.drop-button{
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-.drop-button:hover, .drop-button:focus {
-    background-color: #2980B9;
-}
+.visgrid__dropdown-content:hover {background-color: #ddd}
 
-.dropdown-content a:hover {background-color: #ddd}
-.show {display: block;}
 
 /* Leftovers */
 #myDiv {
@@ -95,7 +94,7 @@ p{
 }
 svg{
     width: 100%;
-    height: 100%;
+    height: 1000%;
 }
 rect{
     fill: gold;
