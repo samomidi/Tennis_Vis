@@ -1,7 +1,8 @@
 const dataPath = "data/three_years.csv";
 
+var name_stats = [];
 function winPercentBarChart(data) {
-    let name_stats = [];
+
     let ids_done = {};
     let current_index = 0;
 
@@ -46,11 +47,13 @@ function winPercentBarChart(data) {
     name_stats.forEach(function (d) {
         d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
     });
+
+    return name_stats;
 }
 
 var filterText = "Roger Federer";
 
-function PlayerDetails(data) {
+function PlayerDetails(players) {
 
     // let name_stats = [];
     // let ids_done = {};
@@ -64,16 +67,27 @@ function PlayerDetails(data) {
     //     }
     //
     //     })
-    var values = d3.keys(data[0]);
+
+    var values = d3.keys(name_stats);
+
+    // var values = d3.keys(players);
+
+    console.log(name_stats[0].Name)
+
+    console.log(d3.values(name_stats).Wins)
+
+
+
+
 
     var select = d3.select("body")
         .append("select")
         .on("change", function() {
             console.log(this.value);
-        })
+        });
 
     select.append("option")
-        .html("Select Player:")
+        .html("Select Player:");
 
     var options = select.selectAll(null)
         .data(values)
@@ -81,9 +95,39 @@ function PlayerDetails(data) {
         .append("option")
         .text(function(d) { return d; });
 
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", 500)
+        .attr("height", 400);
 
+
+    // var x = d3.scaleBand()
+    //     .domain(data.map(function(d) { return d.winner_name; }))
+    //     .range([0,500])
+
+    // var y = d3.scaleLinear()
+    //     .domain([0,100])
+    //     .range([150,0])
+
+    function update() {
+        var value = this.value;
+        var bars = svg.selectAll("rect")
+            .data(data);
+
+        bars.enter().append("rect")
+            .attr("x", function(d) { return x(d.winner_name); })
+            .attr("width", x.bandwidth())
+            .attr("y", 150)
+            .attr("height",0)
+            .merge(bars)
+            .transition()
+            .attr("height", function(d) { return 150 - y(d[value] || 0); })
+            .attr("y", function(d) { return y(d[value] || 0); });
+
+    }
 }
 
-d3.csv(dataPath).then(function(data) {PlayerDetails(data)});
-d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
+players = d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
+d3.csv(dataPath).then(function(data) {PlayerDetails(players)});
+
 
