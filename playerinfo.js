@@ -146,7 +146,7 @@ var svg12 = dimple.newSvg("#myDiv2", 590, 400);
 d3.csv("data/atp_matches_2018.csv", function (data) {
     var ChartInstance = new dimple.chart(svg12, data);
     ChartInstance.setBounds(20, 20, 460, 360)
-    ChartInstance.addMeasureAxis("p", "surface");
+    ChartInstance.addMeasureAxis("p", "tourney_name");
     ChartInstance.addSeries("surface", dimple.plot.pie);
     ChartInstance.addLegend(500, 20, 90, 300, "left");
     ChartInstance.draw();
