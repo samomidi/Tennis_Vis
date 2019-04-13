@@ -7,6 +7,11 @@ TODO:
 	Make button activated javascript make visualizations
 	?Work out how to scroll visualizations made by d3?
 
+Suggestions
+    Lets use only 2018 dataset
+    instead of creating dropdown lets just use links to navigate to pages and visualisation(later
+    down the road if we had time we can focus on it?)
+
 First - Overview
 	Views:
 	Details about visualization
