@@ -107,20 +107,47 @@ function winPercentBarChart(data) {
 // players = d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
 // d3.csv(dataPath).then(function(data) {PlayerDetails(players)});
 
-var svg = dimple.newSvg("#myDiv1", 800, 600);
+
+// simple working example-------------------------
+// var svg = dimple.newSvg("body", 800, 600);
 // var data = [
 //     { "Word":"Hello", "Awesomeness":2000 },
 //     { "Word":"World", "Awesomeness":3000 }
 // ];
-d3.csv('data/atp_matches_2018.csv', function (data) {
-
-
-
-var chart = new dimple.chart(svg, data);
-chart.addCategoryAxis("x", "surface");
-
+// var chart = new dimple.chart(svg, data);
+// chart.addCategoryAxis("x", "Word");
 // chart.addMeasureAxis("y", "Awesomeness");
-chart.addPctAxis("y","count");
-chart.addSeries(null, dimple.plot.bar);
-chart.draw();
+// chart.addSeries(null, dimple.plot.bar);
+// chart.draw();
+
+
+
+// not working- throws error
+var svg2 = dimple.newSvg('#myDiv1', 600,400);
+d3.csv('data/atp_matches_2018.csv', function(data) {
+    var ChartInstance = new dimple.chart(svg2,data);
+    ChartInstance.setBounds(60,30,510,305);
+    var x = ChartInstance.addCategoryAxis('x', 'surface');
+    // x.addOrderRule('Type');
+    var y = ChartInstance.addPctAxis('y', 'Count');
+    //y.showbycent = true;
+    //var y = ChartInstance.addMeasureAxis('y', 'Count');
+    var s = ChartInstance.addSeries(null, dimple.plot.bar);
+    ChartInstance.addLegend(60, 10, 510, 20, "right");
+    ChartInstance.draw(1000);
+
+});
+
+
+
+
+//working pie chart but not correct proportions
+var svg12 = dimple.newSvg("#myDiv2", 590, 400);
+d3.csv("data/atp_matches_2018.csv", function (data) {
+    var ChartInstance = new dimple.chart(svg12, data);
+    ChartInstance.setBounds(20, 20, 460, 360)
+    ChartInstance.addMeasureAxis("p", "surface");
+    ChartInstance.addSeries("surface", dimple.plot.pie);
+    ChartInstance.addLegend(500, 20, 90, 300, "left");
+    ChartInstance.draw();
 });
