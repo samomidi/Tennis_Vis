@@ -1,77 +1,78 @@
 function openTab(evt, tabName) {
     // Declare all variables
-    let i, tab_content, tab_links;
+    let i, tabContent, tabLinks;
 
     // Get all elements with class="tab_content" and hide them
-    tab_content = document.getElementsByClassName("vis-screen");
-    for (i = 0; i < tab_content.length; i++) {
-        tab_content[i].style.display = "none";
+    tabContent = document.getElementsByClassName("vis-screen");
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
     }
 
     // Get all elements with class="tab-link" and remove the class "active"
-    tab_links = document.getElementsByClassName("tab-link");
-    for (i = 0; i < tab_links.length; i++) {
-        tab_links[i].className = tab_links[i].className.replace(" active", "");
+    tabLinks = document.getElementsByClassName("tabs__tab");
+    for (i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className
+            .replace(" active", "");
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(tabName).style.display = "grid";
+    document.getElementsByClassName(tabName)[0].style.display = "grid";
     evt.currentTarget.className += " active";
 }
 
 
 function winPercentBarChart(data) {
-    let name_stats = [];
-    let ids_done = {};
-    let current_index = 0;
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
 
     // Filling name_dict
     data.forEach(function(d) {
-        if (d["winner_id"] in ids_done) {
-            let id = ids_done[d["winner_id"]];
-            name_stats[id]["Wins"]++;
+        if (d["winner_id"] in idsDone) {
+            let id = idsDone[d["winner_id"]];
+            nameStats[id]["Wins"]++;
         }
         else {
-            let new_player = {
-                "ID":d["winner_id"],
-                "Name":d["winner_name"],
-                "Wins":1,
-                "Losses":0
+            let newPlayer = {
+                "ID": d["winner_id"],
+                "Name": d["winner_name"],
+                "Wins": 1,
+                "Losses": 0
             };
-            name_stats.push(new_player);
-            ids_done[d["winner_id"]] = current_index;
-            current_index++;
+            nameStats.push(newPlayer);
+            idsDone[d["winner_id"]] = currentIndex;
+            currentIndex++;
         }
 
-        if (d["loser_id"] in ids_done) {
-            let id = ids_done[d["loser_id"]];
-            name_stats[id]["Losses"]++;
+        if (d["loser_id"] in idsDone) {
+            let id = idsDone[d["loser_id"]];
+            nameStats[id]["Losses"]++;
         }
         else {
-            let new_player = {
-                "ID":d["loser_id"],
-                "Name":d["loser_name"],
-                "Wins":0,
-                "Losses":1
+            let newPlayer = {
+                "ID": d["loser_id"],
+                "Name": d["loser_name"],
+                "Wins": 0,
+                "Losses": 1
             };
-            name_stats.push(new_player);
-            ids_done[d["loser_id"]] = current_index;
-            current_index++;
+            nameStats.push(newPlayer);
+            idsDone[d["loser_id"]] = currentIndex;
+            currentIndex++;
         }
     });
 
 
-    console.log(name_stats);
+    console.log(nameStats);
 
-    name_stats.forEach(function(d) {
-        d["WinPercent"] = d["Wins"]/(d["Wins"]+d["Losses"]);
+    nameStats.forEach(function(d) {
+        d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
     });
 
     // Making bar chart
     d3.select("#myDiv")
         .select("svg")
         .selectAll("rect")
-        .data(name_stats)
+        .data(nameStats)
         .enter()
         .append("rect")
         .attr("width", function(d) {
@@ -80,7 +81,7 @@ function winPercentBarChart(data) {
         .attr("height", 20)
         .attr("x", 50)
         .attr("y", function(d, i) { // i in the index
-            return i*50 + 50;
+            return i * 50 + 50;
         })
         .on("mouseenter", function(d, i) {
             d3.select(this)
@@ -91,7 +92,7 @@ function winPercentBarChart(data) {
                 .append("text")
                 .attr("class", "tooltip")
                 .attr("x", 50 + 10 + d["WinPercent"]*10)
-                .attr("y", (i*50 + 50 + 15))
+                .attr("y", (i * 50 + 50 + 15))
                 .text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
         })
         .on("mouseout", function() {
@@ -113,7 +114,8 @@ function showDropdown(dropdown) {
 
 // Quit dropdown menu if clicked out of it
 window.onclick = function(event) {
-    if (!event.target.matches('.drop-button')) {
+    let target = event.target;
+    if (!target.matches('.drop-button')) {
         let drop_downs = document.getElementsByClassName("dropdown-content");
         let i;
         for (i = 0; i < drop_downs.length; i++) {

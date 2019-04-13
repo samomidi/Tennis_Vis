@@ -1,0 +1,84 @@
+<html lang="en">
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Calling D3 libraries-->
+		<script src="https://d3js.org/d3.v5.js"></script>
+		<script src="https://d3js.org/d3-array.v2.min.js"></script>
+		<!-- Calling own files-->
+		<link rel="stylesheet" href="styles.css">
+		<script src="script.js"></script>
+		<!--title of the web-page-->
+		<title> CS5044 Practical 3 - Tennis </title>
+	</head>
+
+	<body>
+	
+		<!-- simple text heading-->
+		<h2>Tennis Stats</h2>
+		<div class="tabs">
+			<button class="tabs__tab tabs__tab--default" onclick="openTab(event, 'vis-screen--view-overview')">Overview</button>
+			<button class="tabs__tab" onclick="openTab(event, 'vis-screen--view-player')">Player view</button>
+			<button class="tabs__tab" onclick="openTab(event, 'vis-screen--view-tournament')">Tournament view</button>
+			<button class="tabs__tab" onclick="openTab(event, 'vis-screen--view-nationality')">Nationality view</button>
+		</div>
+		<div class="vis-screen vis-screen--view-overview">
+			<div class="vis-screen__panel vis-screen__panel--description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;">
+				<p> Welcome to our visualisation.</p>
+			</div>
+			<div class="vis-screen__panel" data-panelid="2" style="grid-area: 2/ 1/ 3/ 2;">
+				<div class="dropdown">
+					<button onclick="showDropdown(this.parentElement)" class="drop-button">Choose visualisation</button>
+					<div class="dropdown-content">
+						<button onclick="" class="dropdown-button">Test 1</button>
+						<button onclick="" class="dropdown-button">Test 2</button>
+					</div>
+				</div>
+			</div>
+			<div class="vis-screen__panel" data-panelid="3" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="4" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div class="vis-screen vis-screen--view-player">
+			<div class="vis-screen__panel vis-screen__panel--description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="2" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="3" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="4" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div class="vis-screen vis-screen--view-tournament">
+			<div class="vis-screen__panel vis-screen__panel--description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="2" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="3" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="4" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+		<div class="vis-screen vis-screen--view-nationality">
+			<div class="vis-screen__panel vis-screen__panel--description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="2" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="3" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div class="vis-screen__panel" data-panelid="4" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
+		</div>
+
+		<div id="myDiv">
+			<svg>
+
+			</svg>
+		</div>
+	</body>
+
+	<script>document.getElementsByClassName("tabs__tab--default")[0].click();</script>
+
+
+</html>
