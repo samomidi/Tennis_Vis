@@ -1,45 +1,28 @@
 ID,Name
-121366,Abdulhamid Mubarak
-104895,Abdullah Maqdas
-200525,Abdulrahman Alawadhi
-200618,Adam Hornby
 106361,Adam Pavlasek
-105177,Aditya Hari Sasongko
 202090,Adrian Andreev
-106391,Adrian Bodmer
 105173,Adrian Mannarino
 104629,Adrian Menendez Maceiras
 104494,Adrian Ungur
-104847,Adrien Bossel
 106006,Agustin Velotti
-207973,Ainius Sabaliauskas
-103529,Aisam Ul Haq Qureshi
 117361,Akira Santillan
 105874,Albano Olivetti
 103656,Albert Montanes
 105077,Albert Ramos
-108763,Alberto Emmanuel Alvarado Larin
-202165,Alberto Lim
 105060,Aldin Setkic
 104268,Alejandro Falla
 105292,Alejandro Gonzalez
-105479,Alejandro Mendoza
 126846,Aleksandar Vukic
-104873,Aleksandr Nedovyesov
 105692,Alessandro Bega
 105561,Alessandro Giannessi
 106109,Alex Bolt
 200282,Alex De Minaur
-200274,Alex Diaz
-207421,Alex Fairbanks
-200270,Alex Knaff
 104864,Alex Kuznetsov
 200247,Alexandar Lazarov
 122330,Alexander Bublik
 200574,Alexander Donski
 104628,Alexander Kudryavtsev
 105586,Alexander Lazov
-122635,Alexander Merino
 105512,Alexander Sarkissian
 105528,Alexander Ward
 100644,Alexander Zverev
@@ -49,16 +32,12 @@ ID,Name
 200615,Alexei Popyrin
 106072,Alexey Vatutin
 106335,Alexios Halebian
-108985,Ali Ghareeb
 105379,Aljaz Bedene
-123795,Altug Celikbilek
 144760,Amine Ahouda
-200401,Amir Hossein Badi
 104804,Amir Weintraub
 104007,Andre Ghem
 105063,Andrea Arnaboldi
 104676,Andreas Beck
-126143,Andreas Bjerrehus
 104890,Andreas Haider Maurer
 104312,Andreas Seppi
 105413,Andrej Martin
@@ -67,32 +46,17 @@ ID,Name
 126094,Andrey Rublev
 104918,Andy Murray
 105551,Anil Yuksel
-108705,Anis Ghorbel
-103875,Anoosha Shahgholi
 105302,Ante Pavic
-138845,Anthony Jackie Tang
-200045,Anthony Susanto
 134472,Antoine Bellier
-105182,Antso Rakotondramanga
-103499,Aqeel Khan
 111459,Arjun Kadhe
 104677,Artem Sitak
-105085,Artem Smirnov
 105963,Arthur De Greef
-123915,Arturs Lazdins
 106234,Aslan Karatsev
 105226,Attila Balazs
-200416,August Holmgren
 105572,Austin Krajicek
 106269,Austin Smith
-137018,Ayed Zatar
-144826,Aziz Dougaz
-104112,Benjamin Balleret
 103794,Benjamin Becker
 126127,Benjamin Bonzi
-144813,Benjamin Hannestad
-133975,Benjamin Hassan
-111761,Benjamin Lock
 106093,Benjamin Mitchell
 105332,Benoit Paire
 126523,Bernabe Zapata Miralles
@@ -101,14 +65,11 @@ ID,Name
 106425,Blake Mott
 104882,Blaz Kavcic
 105641,Blaz Rola
-126613,Bogdan Borza
 106432,Borna Coric
 127339,Borna Gojo
 105614,Bradley Klahn
-207738,Brandon Perez
 111790,Brayden Schnur
 104548,Brian Baker
-200621,Bruno Britez
 105454,Brydan Klein
 123921,Calvin Hemery
 111815,Cameron Norrie
@@ -118,45 +79,27 @@ ID,Name
 134770,Casper Ruud
 105649,Cedrik Marcel Stebe
 117356,Cem Ilkel
-106396,Cheng Yu Yu
 106426,Christian Garin
 106328,Christian Harrison
 105872,Christian Lindell
-144841,Christian Sigsgaard
-109698,Christoffer Konigsfeldt
-144776,Christophe Tholl
-105499,Christopher Diaz Figueroa
 111153,Christopher Eubanks
 106331,Christopher Oconnell
-105464,Christopher Rungkat
-202358,Chun Hsin Tseng
-124022,Chun Hun Wong
 123768,Collin Altamirano
 106005,Constant Lestienne
 144895,Corentin Moutet
-144747,Courtney John Lock
-105578,Cristian Rodriguez
-202316,Dac Tien Nguyen
 106000,Damir Dzumhur
 127157,Daniel Altmaier
 104978,Daniel Brands
-131951,Daniel Cukierman
 123755,Daniel Elahi Galan Riveros
 105554,Daniel Evans
 104593,Daniel Gimeno Traver
 109054,Daniel Masur
-207415,Daniel Michalski
 103926,Daniel Munoz De La Nava
-125803,Daniel Windahl
 106421,Daniil Medvedev
-122471,Danylo Kalenichenko
 105985,Darian King
-138431,Darko Bojanovic
-105812,David Agung Susanto
 103970,David Ferrer
 105676,David Goffin
 104095,David Guez
-105961,David Souto
 104797,Denis Istomin
 106045,Denis Kudla
 133430,Denis Shapovalov
@@ -165,29 +108,19 @@ ID,Name
 105842,Di Wu
 106043,Diego Sebastian Schwartzman
 106220,Dimitar Kuzmanov
-127300,Djurabek Karimov
-122078,Dmitry Popko
 104098,Dmitry Tursunov
 106233,Dominic Thiem
 136440,Dominik Koepfer
 105385,Donald Young
-106021,Dragos Dima
-117353,Duck Hee Lee
 104534,Dudi Sela
-105935,Duilio Beretta
 105583,Dusan Lajovic
 104460,Dustin Brown
-105299,Dzmitry Zhyrmont
 122548,Edan Leshem
 104273,Edouard Roger Vasselin
-202210,Edris Fetisleam
-105679,Eduardo Struvay
-144814,Eero Vasa
 106078,Egor Gerasimov
 111200,Elias Ymer
 200611,Elliot Benchetrit
 202130,Emil Reinberg
-200325,Emil Ruusuvuori
 105877,Emilio Gomez
 105782,Enrique Lopez Perez
 124014,Ernesto Escobedo
@@ -199,11 +132,9 @@ ID,Name
 104802,Fabrice Martin
 106032,Facundo Arguello
 105487,Facundo Bagnis
-104736,Farrukh Dustov
 105948,Federico Coria
 105643,Federico Delbonis
 105943,Federico Gaio
-105156,Federico Zeballos
 103852,Feliciano Lopez
 2e+05,Felix Auger Aliassime
 104269,Fernando Verdasco
@@ -213,33 +144,23 @@ ID,Name
 103835,Filippo Volandri
 110686,Finn Tearney
 104252,Florian Mayer
-104495,Florin Mergea
-108717,Francis Casey Alcantara
 126207,Francis Tiafoe
-208028,Francisco Llanes
-122082,Francisco Yim Kim
 105015,Franco Skugor
 104433,Frank Dancevic
 110596,Fred Simonsson
 106393,Frederico Ferreira Silva
-104233,Frederik Nielsen
-121896,Gabor Borsos
 104792,Gael Monfils
 105671,Gastao Elias
 144972,Geoffrey Blancaneaux
-106106,George Tsivadze
 105589,Gerald Melzer
-126204,Gerardo Lopez Villasenor
 126149,Gianluca Mager
 106420,Gianluigi Quinzi
 104180,Gilles Muller
 104468,Gilles Simon
-123773,Giorgi Javakhishvili
 104117,Giovanni Lapentti
 105163,Gleb Sakharov
 104424,Go Soeda
 105271,Gonzalo Escobar
-106174,Gonzalo Lama
 104813,Grega Zemlja
 106296,Gregoire Barrere
 105777,Grigor Dimitrov
@@ -247,42 +168,22 @@ ID,Name
 105550,Guido Pella
 106105,Guilherme Clezar
 104198,Guillermo Garcia Lopez
-200273,Hady Habib
-106085,Hamid Reza Nadaf
-120798,Hans Hach Verdugo
-105070,Hans Podlipnik Castillo
-144896,Hao Sheng Koay
-105349,Harri Heliovaara
-104631,Harshana Godamanna
-104656,Haydn Lewis
-124023,Hei Yin Andrew Li
 105967,Henri Laaksonen
-200622,Hernando Jose Escurra Isnardi
 105655,Hiroki Moriya
-208029,Holger Vitus Nodskov Rune
-106184,Hong Chung
-138846,Hong Kit Jack Wong
 104547,Horacio Zeballos
-105448,Hsien Yin Peng
 128034,Hubert Hurkacz
-106198,Hugo Dellien
 200384,Hugo Gaston
 111202,Hyeon Chung
-200620,Ignacio Garcia
 103857,Igor Kunitsyn
 104997,Igor Sijsling
-207277,Illia Biloborodko
 105011,Illya Marchenko
 125802,Ilya Ivashka
 105438,Inigo Cervantes Huegun
-134854,Irakli Metreveli
 106035,Isak Arvidsson
 104471,Ivan Dodig
-105111,Ivan Endara
 103333,Ivo Karlovic
 106325,Jabor Al Mutawa
 106058,Jack Sock
-134114,Jad Ballout
 105902,James Duckworth
 104945,James Mcgee
 104868,James Ward
@@ -291,110 +192,75 @@ ID,Name
 105526,Jan Lennard Struff
 103902,Jan Mertl
 105596,Jan Satral
-111781,Janis Podzus
 104386,Janko Tipsarevic
 111577,Jared Donaldson
-103813,Jarkko Nieminen
 105359,Jason Jung
 106186,Jason Kubler
 144719,Jaume Munar
 126652,Jay Clarke
 111574,Jc Aragone
-200272,Jean Jacques Rakotohasy
 202385,Jenson Brooksby
 104871,Jeremy Chardy
 105668,Jerzy Janowicz
-106150,Jeson Patrombon
-105703,Jesus Bandres
-127143,Jirat Navasirisomboon
 106210,Jiri Vesely
 104542,Jo Wilfried Tsonga
 106249,Joao Domingues
-106252,Joao Pedro Sorgi
 105311,Joao Sousa
 105154,Joao Souza
 126627,Johan Nikles
-200460,John Bryan Decasa Otico
 104545,John Isner
 105357,John Millman
 105441,John Patrick Smith
 105559,Jonathan Eysseric
-111197,Jonathan Mridha
 111442,Jordan Thompson
-105467,Jordi Munoz Abreu
 105515,Jordi Samper Montana
-106410,Jorge Brian Panta Herreros
 106167,Joris De Loore
 105497,Jose Hernandez
-144773,Jose Olivares
 104907,Jose Rubin Statham
 106075,Jozef Kovalik
 106228,Juan Ignacio Londero
 105223,Juan Martin Del Potro
 104338,Juan Monaco
-122669,Juan Pablo Varillas Patino Samudio
-105490,Jui Chen Hung
 103898,Julien Benneteau
-106333,Julien Cagnina
-108772,Julius Tverijonas
 103781,Jurgen Melzer
 105132,Jurgen Zopp
 200514,Jurij Rodionov
-132028,Justin Lunn
 111794,Kamil Majchrzak
-104816,Karan Rastogi
 111575,Karen Khachanov
-105747,Karim Mohamed Maamoun
 105453,Kei Nishikori
-144807,Kenneth Raisma
 104932,Kenny De Schepper
 104731,Kevin Anderson
 110536,Kevin King
-126939,Khumoun Sultanov
 106293,Kimmer Coppejans
-105579,Kittipong Wachiramanowong
 104505,Konstantin Kravchuk
-134120,Kuan Yi Lee
 106378,Kyle Edmund
 104467,Lamine Ouahab
 111513,Laslo Djere
 106362,Laurent Lokoli
-105827,Laurynas Grigelis
 104919,Leonardo Mayer
 106281,Liam Broady
 132482,Liam Caruana
-105946,Liang Chi Huang
 103720,Lleyton Hewitt
 144750,Lloyd George Muirhead Harris
 105841,Lorenzo Giustino
 132283,Lorenzo Sonego
 144923,Louis Wessels
 104563,Luca Vanni
-145003,Lucas Andriamasilalao
 200031,Lucas Catarina
 106412,Lucas Gomez
 111192,Lucas Miedler
 106298,Lucas Pouille
-122047,Luciano Ramazzini
-105334,Luis David Martinez
-126502,Luis Diego Chavez Villalpando
 106250,Luis Patino
 105041,Lukas Lacko
-108748,Lukas Mugevicius
 104586,Lukas Rosol
 106291,Luke Saville
-120792,M Abid Ali Khan Akbar
 111456,Mackenzie Mcdonald
-108782,Mahammad Abid
 104291,Malek Jaziri
-136704,Manuel Castellanos
 105688,Manuel Sanchez
 144817,Marc Andrea Huesler
-104043,Marc Lopez
 117360,Marc Polmans
 104719,Marcel Granollers
 105656,Marcelo Arevalo
-144642,Marcelo Tomas Barrios Vera
 106065,Marco Cecchinato
 103843,Marco Chiudinelli
 105477,Marco Trungelliti
@@ -402,83 +268,46 @@ ID,Name
 106218,Marcos Giron
 105650,Marcus Willis
 105227,Marin Cilic
-105775,Marin Draganja
 105657,Marius Copil
-207400,Mark Chigaazira
 106311,Marko Tepavac
-105436,Markus Eriksson
 104947,Marsel Ilhan
-105899,Martin Cuevas
 105373,Martin Klizan
-106342,Martins Podzus
 105916,Marton Fucsovics
 202359,Marvin Moeller
 106207,Mate Pavic
-200218,Mate Valkusz
 106288,Mathias Bourgue
 126610,Matteo Berrettini
 104970,Matteo Viola
 105881,Matthew Barton
 105051,Matthew Ebden
-207759,Matthew Foster Estwick
 104897,Matthias Bachinger
-144940,Mattias Siimar
-104235,Matwe Middelkoop
-105273,Mauricio Echazu
 126845,Max Purcell
 111506,Maxime Hamou
 126125,Maxime Janvier
 109739,Maximilian Marterer
 104216,Maximo Gonzalez
-105250,Mehdi Jdi
-200250,Mehluli Don Ayanda Sibanda
-144949,Menelaos Efstathiou
 103582,Michael Berrer
 105426,Michael Linzer
 111581,Michael Mmoh
 105030,Michael Venus
 104308,Michal Przysiezny
-206000,Michel Saade
-144799,Miguel Angel Este
-111453,Mikael Torpegaard
 144707,Mikael Ymer
-105450,Mike Urbanija
-108761,Mikelis Libietis
 105062,Mikhail Kukushkin
 104022,Mikhail Youzhny
 105181,Miljan Zekic
 105683,Milos Raonic
-123969,Minhtuan Pham
-207972,Minjong Park
 200175,Miomir Kecmanovic
 105806,Mirza Basic
 104999,Mischa Zverev
 106283,Mitchell Krueger
-121411,Moez Chargui
 105633,Mohamed Safwat
-103600,Mohammad Ghareeb
-108741,Mohd Assri Merzuki
-105606,Mohsen Hossein Zade
 122570,Mubarak Al Harrasi
-207176,Muhammad Althaf Dhaifullah
-207836,Muzammil Murtaza
-200125,Mykyta Mashtakov
-105502,N Sriram Balaji
-122533,Nam Hoang Ly
-102800,Nenad Zimonjic
-123983,Nerman Fatic
-123315,Nicholas Campbell
-200572,Nick Hardt
 106401,Nick Kyrgios
 200095,Nicola Kuhn
-105707,Nicolaas Scholtz
-126102,Nicolae Frunza
 104597,Nicolas Almagro
-126190,Nicolas Alvarez
 111797,Nicolas Jarry
 106044,Nicolas Kicker
 103917,Nicolas Mahut
-200711,Nicolas Mejia
 105677,Nikola Cacic
 105254,Nikola Mektic
 105932,Nikoloz Basilashvili
@@ -495,36 +324,22 @@ ID,Name
 104665,Pablo Andujar
 105807,Pablo Carreno Busta
 104655,Pablo Cuevas
-207139,Palaphoom Kovapitukted
 103893,Paolo Lorenzi
 200516,Patrick Kypson
-104591,Patrick Tierro
-126609,Patrik Niklas Salminen
-105113,Patrik Rosenholm
 103908,Paul Henri Mathieu
-106353,Pedja Krstin
 106398,Pedro Cachin
 124079,Pedro Martinez Portero
 105155,Pedro Sousa
 105137,Pere Riba
-200483,Peter August Anker
-126530,Peter Bothwell
 105376,Peter Gojowczyk
-105954,Peter Nagy
 105166,Peter Polansky
 117365,Petros Chrysochos
-105229,Philip Bester
-132040,Philip Wilbert Major
 104259,Philipp Kohlschreiber
 105732,Pierre Hugues Herbert
 105432,Prajnesh Gunneswaran
-111181,Pruchya Isarow
-200080,Puriwat Chatpatcharoen
 111460,Quentin Halys
 103285,Radek Stepanek
 105430,Radu Albot
-104763,Rafael Arevalo
-206768,Rafael Eduardo Gonzalez Retana
 104745,Rafael Nadal
 104330,Rajeev Ram
 106368,Ramkumar Ramanathan
@@ -533,58 +348,32 @@ ID,Name
 105952,Renzo Olivo
 105575,Ricardas Berankis
 106120,Ricardo Ojeda Lara
-106175,Ricardo Rodriguez
 105821,Riccardo Bellotti
 104755,Richard Gasquet
 105138,Roberto Bautista Agut
 106148,Roberto Carballes Baena
-106232,Roberto Cid
 105406,Roberto Marcora
 105751,Roberto Ortega Olmedo
 105933,Roberto Quiroz
 104898,Robin Haase
-127570,Rodrigo Arus
-123965,Rodrigo Banzer
 103819,Roger Federer
 104297,Rogerio Dutra Silva
-103523,Rohan Bopanna
-106033,Romain Arneodo
-122236,Roman Hassanov
 126128,Roman Safiullin
 105074,Ruben Bemelmans
-104604,Ruben Gonzales
 200484,Rudolf Molleker
-144854,Rudolfs Mednis
 105992,Ryan Harrison
 105031,Saketh Myneni
 106099,Salvatore Caruso
 105023,Sam Querrey
 105032,Samuel Groth
-105757,Sandro Ehrat
-122109,Sanjar Fayziev
 105053,Santiago Giraldo
-124063,Santiago Maresca
-124126,Sarp Agabigun
-105691,Scott Griekspoor
-108786,Seanon Williams
-200619,Sebastian Arcila
 200624,Sebastian Korda
 124116,Sebastian Ofner
-144771,Sebastian Quiros
 105871,Sekou Bangoura
-111805,Seong Chan Hong
 104660,Sergiy Stakhovsky
-105566,Shahin Khaledan
-134886,Sharmal Dissanayake
-202382,Simen Sunde Bratholm
-200278,Simon Carr
 104620,Simone Bolelli
-134217,Skyler Butts
 104500,Somdev Devvarman
 126952,Soon Woo Kwon
-126526,Soren Hess Olesen
-207479,Soufiane El Mesbahi
-106180,Spencer Newman
 104527,Stanislas Wawrinka
 111578,Stefan Kozlov
 109303,Stefano Napolitano
@@ -595,14 +384,11 @@ ID,Name
 105449,Steve Johnson
 105731,Steven Diez
 111576,Sumit Nagal
-111186,Syed Mohd Agil Syed Naguib
-126689,Tadas Babelis
 105626,Takanyi Garanganga
 134868,Tallon Griekspoor
 106121,Taro Daniel
 105147,Tatsuma Ito
 126203,Taylor Harry Fritz
-106381,Temur Ismailov
 105815,Tennys Sandgren
 104559,Teymuraz Gabashvili
 111515,Thai Son Kwiatkowski
@@ -610,56 +396,32 @@ ID,Name
 106329,Thiago Monteiro
 205734,Thiago Seyboth Wild
 105217,Thiemo De Bakker
-106392,Thien Nguyen Hoang
 105341,Thomas Fabbiano
-103531,Thomas Oger
 105064,Thomaz Bellucci
-104251,Ti Chen
 105853,Tigre Hank
-105798,Tilen Zitnik
 105065,Tim Smyczek
 126646,Tim Van Rijthoven
 104735,Tobias Kamke
-134507,Tom Diederich
-105587,Tom Kocevar Desman
 104607,Tomas Berdych
-202219,Tomas Vaise
-105493,Tomislav Brkic
-105630,Tomislav Ternar
 103163,Tommy Haas
 126205,Tommy Paul
 103990,Tommy Robredo
 106137,Tristan Lamasine
-105738,Tsung Hua Yang
-120401,Tucker Vorster
 200005,Ugo Humbert
-111167,Ugo Nastasi
 106324,Vaclav Safranek
 105577,Vasek Pospisil
 103607,Victor Estrella
-126340,Viktor Durasovic
 105634,Viktor Galovic
 104678,Viktor Troicki
 104672,Vincent Millot
-104901,Vladimir Ivanov
-108739,Wilfredo Gonzalez
-106397,Wishaya Trongcharoenchaikul
-207971,Xavier Lawrence
 105161,Yann Marti
 105870,Yannick Hanfmann
 120424,Yannick Maden
-106138,Yaraslau Shyla
-108982,Yasir Khan
-202462,Yasitha De Silva
-206642,Yassir Kilani
 106034,Yasutaka Uchiyama
 104229,Yen Hsun Lu
 200059,Yibing Wu
-105790,Yong Kyu Lim
 106415,Yoshihito Nishioka
 133297,Yosuke Watanuki
-126174,Youssef Hossam
-200075,Yshai Oliel
 105216,Yuichi Sugita
 106026,Yuki Bhambri
 126208,Yusuke Takahashi
