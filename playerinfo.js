@@ -41,15 +41,23 @@ function winPercentBarChart(data) {
         }
     });
 
+    console.log(name_stats[0].Name);
 
-    console.log(name_stats);
+    for (i=0; i <name_stats.length; i++){
+        console.log(name_stats[i]["Name"])
+    }
+    // console.log("Sub set", name_stats["Name"]);
+
 
     name_stats.forEach(function (d) {
         d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
     });
 
-    return name_stats;
+    // return name_stats;
 }
+
+d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
+
 
 // var filterText = "Roger Federer";
 //
@@ -123,31 +131,31 @@ function winPercentBarChart(data) {
 
 
 // not working- throws error
-var svg2 = dimple.newSvg('#myDiv1', 600,400);
-d3.csv('data/atp_matches_2018.csv', function(data) {
-    var ChartInstance = new dimple.chart(svg2,data);
-    ChartInstance.setBounds(60,30,510,305);
-    var x = ChartInstance.addCategoryAxis('x', 'surface');
-    // x.addOrderRule('Type');
-    var y = ChartInstance.addPctAxis('y', 'Count');
-    //y.showbycent = true;
-    //var y = ChartInstance.addMeasureAxis('y', 'Count');
-    var s = ChartInstance.addSeries(null, dimple.plot.bar);
-    ChartInstance.addLegend(60, 10, 510, 20, "right");
-    ChartInstance.draw(1000);
-
-});
+// var svg2 = dimple.newSvg('#myDiv1', 600,400);
+// d3.csv('data/atp_matches_2018.csv', function(data) {
+//     var ChartInstance = new dimple.chart(svg2,data);
+//     ChartInstance.setBounds(60,30,510,305);
+//     var x = ChartInstance.addCategoryAxis('x', 'surface');
+//     // x.addOrderRule('Type');
+//     var y = ChartInstance.addPctAxis('y', 'Count');
+//     //y.showbycent = true;
+//     //var y = ChartInstance.addMeasureAxis('y', 'Count');
+//     var s = ChartInstance.addSeries(null, dimple.plot.bar);
+//     ChartInstance.addLegend(60, 10, 510, 20, "right");
+//     ChartInstance.draw(1000);
+//
+// });
 
 
 
 
 //working pie chart but not correct proportions
-var svg12 = dimple.newSvg("#myDiv2", 590, 400);
-d3.csv("data/atp_matches_2018.csv", function (data) {
-    var ChartInstance = new dimple.chart(svg12, data);
-    ChartInstance.setBounds(20, 20, 460, 360)
-    ChartInstance.addMeasureAxis("p", "tourney_name");
-    ChartInstance.addSeries("surface", dimple.plot.pie);
-    ChartInstance.addLegend(500, 20, 90, 300, "left");
-    ChartInstance.draw();
-});
+// var svg12 = dimple.newSvg("#myDiv2", 590, 400);
+// d3.csv("data/atp_matches_2018.csv", function (data) {
+//     var ChartInstance = new dimple.chart(svg12, data);
+//     ChartInstance.setBounds(20, 20, 460, 360)
+//     ChartInstance.addMeasureAxis("p", "tourney_name");
+//     ChartInstance.addSeries("surface", dimple.plot.pie);
+//     ChartInstance.addLegend(500, 20, 90, 300, "left");
+//     ChartInstance.draw();
+// });
