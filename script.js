@@ -45,7 +45,7 @@ window.onclick = function(event) {
 function showVisualisation(type, button) {
     let panel = button.parentElement.parentElement.parentElement;
     // Removing previous visualisation
-    panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0]
+    let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
     panelSvg.parentNode.replaceChild(panelSvg.cloneNode(false), panelSvg);
     if (type === 'WinRates') {
         winPercentBarChartPanel(panel);
@@ -207,9 +207,9 @@ function winPercentBarChartPanel(panel) {
 }
 
 function surfacesOverTime(panel) {
-  d3.csv(dataPath).then(function(data)) {
+  d3.csv(dataPath).then(function(data) {
     
-  }
+  });
 }
 
 function templateFunction(panel) {
