@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5f58f88-ab39-493c-9d7d-12eb8c704d96" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
-    </list>
+    <list default="true" id="e5f58f88-ab39-493c-9d7d-12eb8c704d96" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,7 +9,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="612">
@@ -41,18 +38,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="436" column="85" selection-start-line="436" selection-start-column="85" selection-end-line="436" selection-end-column="85" />
+            <state relative-caret-position="85">
+              <caret line="385" column="55" selection-start-line="385" selection-start-column="55" selection-end-line="385" selection-end-column="55" />
               <folding>
                 <element signature="n#!!block;n#showDropdown#0" />
                 <element signature="e#1036#1511#0" />
                 <element signature="n#!!block;n#makeFilterOptions#0" />
                 <element signature="n#!!block;n#onFilterChange#0" />
-                <element signature="n#!!block;n#winPercentBarChartPanel#0" />
-                <element signature="n#!!block;n#winNumbersBarChart#1" />
               </folding>
             </state>
           </provider>
@@ -96,8 +91,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/styles.css" />
-        <option value="$PROJECT_DIR$/script.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/script.js" />
       </list>
     </option>
   </component>
@@ -161,7 +156,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23298000" />
+    <option name="totallyTimeSpent" value="24430000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
@@ -203,21 +198,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="436" column="85" selection-start-line="436" selection-start-column="85" selection-end-line="436" selection-end-column="85" />
-          <folding>
-            <element signature="n#!!block;n#showDropdown#0" />
-            <element signature="e#1036#1511#0" />
-            <element signature="n#!!block;n#makeFilterOptions#0" />
-            <element signature="n#!!block;n#onFilterChange#0" />
-            <element signature="n#!!block;n#winPercentBarChartPanel#0" />
-            <element signature="n#!!block;n#winNumbersBarChart#1" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
@@ -241,6 +221,19 @@
             <element signature="n#style#0;n#div#1;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#3;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="385" column="55" selection-start-line="385" selection-start-column="55" selection-end-line="385" selection-end-column="55" />
+          <folding>
+            <element signature="n#!!block;n#showDropdown#0" />
+            <element signature="e#1036#1511#0" />
+            <element signature="n#!!block;n#makeFilterOptions#0" />
+            <element signature="n#!!block;n#onFilterChange#0" />
           </folding>
         </state>
       </provider>
