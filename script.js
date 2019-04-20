@@ -203,6 +203,12 @@ function winPercentBarChartPanel(panel) {
 
 }
 
+function surfacesOverTime(panel) {
+  d3.csv(dataPath).then(function(data)) {
+    
+  }
+}
+
 function templateFunction(panel) {
     // Load the data
     d3.csv(dataPath).then(function(data) {
