@@ -53,6 +53,9 @@ function showVisualisation(type, button) {
     else if (type === 'Template') {
         templateFunction(panel);
     }
+    else if (type === 'test1'){
+        test1(panel)
+    }
 }
 
 function makeFilterOptions() {
@@ -233,6 +236,110 @@ function templateFunction(panel) {
     });
 }
 
+
+function test1(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                nameStats[id]["Wins"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 1,
+                    "Losses": 0
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                nameStats[id]["Losses"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 0,
+                    "Losses": 1
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+
+
+        // for (i=0; i <nameStats.length; i++){
+        //     console.log(nameStats[i]["Name"])
+        // }
+        nameStats.forEach(function(d) {
+            d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
+        });
+
+        console.log(nameStats);
+
+
+        // Making Histogram of ages
+        // const svg = d3.select('svg');
+        //
+        // const width = +svg.attr('width');
+        // const height = +svg.attr('height');
+        //
+        // const xValue = d => d.Name;
+        // const yValue = d => d.WinPercent;
+        // const margin = { top: 20, right: 40, bottom: 20, left: 100 };
+        // const innerWidth = width - margin.left - margin.right;
+        // const innerHeight = height - margin.top - margin.bottom;
+        //
+        // const xScale = d3.scaleBand()
+        //     .domain([nameStats.map(xValue)])
+        //     .range([0,innerWidth]);
+        //
+        // const yScale = d3.scaleLinear()
+        //     .domain([0, d3.max(nameStats, yValue)])
+        //     .range([0, innerHeight]);
+
+
+        d3.select(panel)
+            .select("svg")
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            // .attr("y", d => yScale(yValue(d)) )
+            // .attr("x", 50)
+            // .attr("width", d => xScale(xValue(d)))
+            // .attr("height", d => yScale(yValue(Math.abs(d))))
+            // .attr("y", 50 )
+            // .attr("x", 50)
+            // .attr("width", 100)
+            // .attr("height", 100);
+            .attr("width", function(d) {
+                return d["WinPercent"] * 1000;
+            })
+            .attr("height", 20)
+            .attr("x", 50)
+            .attr("y", function(d, i) { // i in the index
+                return i * 50 + 50;
+            })
+
+    });
+
+}
 
 /*
 function winPercentBarChart(data) {
