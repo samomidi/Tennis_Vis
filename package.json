@@ -1,0 +1,7 @@
+{
+  "name": "d3-project-cs5044",
+  "version": "1.0.0",
+  "dependencies": {
+    "d3": "^5.9.2"
+  }
+}

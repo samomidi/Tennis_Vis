@@ -284,8 +284,16 @@ function test1(panel) {
 
 
         // Making Histogram of ages
+        const svg = d3.select('svg');
+
+        const width = +svg.attr('width');
+        const height = +svg.attr('height');
+
         const xValue = d => d.Name;
         const yValue = d => d.WinPercent;
+        const margin = { top: 20, right: 40, bottom: 20, left: 100 };
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
 
         const xScale = d3.scaleBand()
             .domain([nameStats.map(xValue)])
@@ -304,7 +312,7 @@ function test1(panel) {
             .append("rect")
             .attr("y", d => yScale(yValue(d)) )
             .attr("width", d => xScale(xValue(d)))
-            .attr("height", d => yScale(yValue(d)))
+            .attr("height", d => yScale(yValue(Math.abs(d))))
 
 
 
