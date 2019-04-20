@@ -64,6 +64,12 @@ function showVisualisation(type, button) {
         case('test1'):
             test1(panel);
             break;
+        case('WinNumbers'):
+            winNumbersBarChart(panel);
+            break;
+        case('TourneyNumbers'):
+            tourneysAttendedBarChart(panel);
+            break;
         default:
             break;
     }
@@ -180,10 +186,11 @@ function winPercentBarChartPanel(panel) {
     let svg = d3.select(panel).select("svg");
     let height = panel.offsetHeight;
     let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-    let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
-    panelSvg.style.height = height*100;
-    panelSvg.style.width = width*100;
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
 
     d3.csv(dataPath).then(function(data) {
 
@@ -198,7 +205,8 @@ function winPercentBarChartPanel(panel) {
                     "ID": d["winner_id"],
                     "Name": d["winner_name"],
                     "Wins": 1,
-                    "Losses": 0
+                    "Losses": 0,
+                    "IOC": d["winner_ioc"]
                 };
                 nameStats.push(newPlayer);
                 idsDone[d["winner_id"]] = currentIndex;
@@ -214,7 +222,8 @@ function winPercentBarChartPanel(panel) {
                     "ID": d["loser_id"],
                     "Name": d["loser_name"],
                     "Wins": 0,
-                    "Losses": 1
+                    "Losses": 1,
+                    "IOC": d["loser_ioc"]
                 };
                 nameStats.push(newPlayer);
                 idsDone[d["loser_id"]] = currentIndex;
@@ -222,50 +231,348 @@ function winPercentBarChartPanel(panel) {
             }
         });
 
-
-        console.log(nameStats);
-
         nameStats.forEach(function(d) {
             d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
         });
 
+        // Filter more than 50 games only
+        nameStats = nameStats.filter(d => d["Wins"] + d["Losses"] > 50);
+        nameStats = nameStats.sort(function(a, b) {return b["WinPercent"] - a["WinPercent"]});
+
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, 1])
+            .range([height-margin.bottom, margin.top]);
+
         // Making bar chart
-        d3.select(panel)
-            .select("svg")
+        svg
             .selectAll("rect")
             .data(nameStats)
             .enter()
             .append("rect")
-            .attr("width", function(d) {
-                return d["WinPercent"] * 1000;
-            })
-            .attr("height", 20)
-            .attr("x", 50)
-            .attr("y", function(d, i) { // i in the index
-                return i * 50 + 50;
-            })
+            .attr("height", d => height-margin.bottom - y(d["WinPercent"]))
+            .attr("width", 3)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["WinPercent"]))
+            .style("fill", "#fcff07")
             .on("mouseenter", function(d, i) {
                 d3.select(this)
                     .transition()
                     .duration(200)
                     .style("fill", "#FF9C00");
-                d3.select("svg")
+                svg
                     .append("text")
                     .attr("class", "tooltip")
-                    .attr("x", 50 + 10 + d["WinPercent"]*10)
-                    .attr("y", (i * 50 + 50 + 15))
+                    .attr("x", width/4)
+                    .attr("y", height/4)
                     .text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", (height/4)+20)
+                    .text("Nationality: " + d["IOC"])
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
             })
             .on("mouseout", function() {
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .style("fill", "gold");
-                d3.selectAll(".tooltip")
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
                     .remove();
             });
-    });
 
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text("Player Win Rates (Only for >50 Professional games)");
+
+
+        // Axis
+        yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
+}
+
+function tourneysAttendedBarChart(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                nameStats[id]["Tourneys"].add(d["tourney_id"]);
+                nameStats[id]["Tourney_names"].push(d["tourney_name"]);
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "Tourneys": new Set([d["tourney_id"]]),
+                    "Tourney_names": [],
+                    "IOC": d["winner_ioc"]
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                nameStats[id]["Tourneys"].add(d["tourney_id"]);
+                nameStats[id]["Tourney_names"].push(d["tourney_name"]);
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "Tourneys": new Set([d["tourney_id"]]),
+                    "Tourney_names": [],
+                    "IOC": d["loser_ioc"]
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        let min_tournaments = 20;
+        // Filter more than min_tournaments only
+        console.log(nameStats);
+
+        nameStats = nameStats.filter(d => d["Tourneys"].size > min_tournaments);
+        nameStats = nameStats.sort(function(a, b) {return b["Tourneys"].size - a["Tourneys"].size});
+
+
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, d3.max(nameStats, d => d["Tourneys"].size)])
+            .range([height-margin.bottom, margin.top]);
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["Tourneys"].size))
+            .attr("width", 3)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["Tourneys"].size))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d, i) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", height/4)
+                    .text(d["Name"] + ": " + d["Tourneys"].size + " tournaments attended")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", (height/4)+20)
+                    .text("Nationality: " + d["IOC"])
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            });
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text("Number of tournaments attended (only for >" + min_tournaments + ")");
+
+
+        // Axis
+        yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
+}
+
+function winNumbersBarChart(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                nameStats[id]["Wins"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "Wins": 1,
+                    "Losses": 0,
+                    "IOC": d["winner_ioc"]
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                nameStats[id]["Losses"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "Wins": 0,
+                    "Losses": 1,
+                    "IOC": d["loser_ioc"]
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        // Filter more than 50 games only
+        nameStats = nameStats.filter(d => d["Wins"] + d["Losses"] > 50);
+        nameStats = nameStats.sort(function(a, b) {return b["Wins"] - a["Wins"]});
+
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, d3.max(nameStats, d => d["Wins"])])
+            .range([height-margin.bottom, margin.top]);
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["Wins"]))
+            .attr("width", 3)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["Wins"]))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d, i) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", height/4)
+                    .text(d["Name"] + ": " + d["Wins"] + "% Wins")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", (height/4)+20)
+                    .text("Nationality: " + d["IOC"])
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            });
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text("Number of matches won (Only for >50 Professional games)");
+
+
+        // Axis
+        yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
 }
 
 function surfacesOverTime(panel) {
