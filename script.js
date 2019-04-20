@@ -61,14 +61,20 @@ function showVisualisation(type, button) {
         case('SurfacesOverTime'):
             surfacesOverTime(panel);
             break;
-        case('test1'):
-            test1(panel);
+        case('Test1'):
+            Test1(panel);
+            break;
+        case('Test2'):
+            Test2(panel);
             break;
         case('WinNumbers'):
             winNumbersBarChart(panel);
             break;
         case('TourneyNumbers'):
             tourneysAttendedBarChart(panel);
+            break;
+        case('TourneyMinutes'):
+            TourneyMinutes(panel);
             break;
         default:
             break;
@@ -735,7 +741,7 @@ function templateFunction(panel) {
 }
 
 
-function test1(panel) {
+function Test1(panel) {
     let nameStats = [];
     let idsDone = {};
     let currentIndex = 0;
@@ -838,6 +844,87 @@ function test1(panel) {
     });
 
 }
+
+function TourneyMinutes(panel) {
+
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["minutes"] !== "NA") {
+                if (d["tourney_id"] in idsDone) {
+                    let id = idsDone[d["tourney_id"]];
+                    // console.log(d["minutes"]);
+                    // console.log(parseInt(d.minutes));
+                    nameStats[id]["Minutes"] = nameStats[id]["Minutes"] + parseInt(d["minutes"]);
+                } else {
+                    // console.log(parseInt(d.Minutes));
+                    let newTourney = {
+                        "ID": d["tourney_id"],
+                        "Name": d["tourney_name"],
+                        "Minutes": parseInt(d["minutes"])
+
+                    };
+                    nameStats.push(newTourney);
+                    idsDone[d["tourney_id"]] = currentIndex;
+                    currentIndex++;
+                }
+
+                if (d["loser_id"] in idsDone) {
+                    let id = idsDone[d["loser_id"]];
+                    nameStats[id]["Losses"]++;
+                }
+            }
+
+        });
+
+        nameStats.forEach(function (d) {
+
+        })
+        console.log(nameStats);
+
+
+        let monthParse = d3.timeParse("%Y%m");
+        let scaleDateFormat = d3.timeFormat("%Y\n%m");
+
+
+        let svg = d3.select(panel).select('svg');
+        let width = panel.offsetWidth;
+        let height = panel.offsetHeight;
+        let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+        let y = d3.scaleLinear()
+            .domain([0,d3.max(nameStats, d => d["Minutes"])])
+            .range([height-margin.bottom, margin.top]);
+
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", function(d) {
+                // console.log(y(d["Minutes"]));
+                return y(d["Minutes"]);
+            })
+            .attr("width", 3)
+            .attr("y", d => height-y(d["Minutes"]))
+            .attr("x", function(d) {
+                // console.log(x(d["ID"]));
+                return x(d["ID"]);
+            });
+
+
+    });
+}
+
 
 /*
 function winPercentBarChart(data) {
