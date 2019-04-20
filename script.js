@@ -44,6 +44,9 @@ window.onclick = function(event) {
 
 function showVisualisation(type, button) {
     let panel = button.parentElement.parentElement.parentElement;
+    // Removing previous visualisation
+    panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0]
+    panelSvg.parentNode.replaceChild(panelSvg.cloneNode(false), panelSvg);
     if (type === 'WinRates') {
         winPercentBarChartPanel(panel);
     }

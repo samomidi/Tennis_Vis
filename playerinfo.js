@@ -46,8 +46,14 @@ window.onclick = function(event) {
 
 function showVisualisation(type, button) {
     let panel = button.parentElement.parentElement.parentElement;
+    console.log("removing");
+    panel.select('svg').selectAll("*").remove();
     if (type === 'WinRates') {
-        test1(panel);
+      console.log("making win rates");
+        winPercentBarChartPanel(panel);
+    }
+    else if (type == 'Test1') {
+      test1(panel);
     }
     else if (type === 'Template') {
         templateFunction(panel);
@@ -311,6 +317,7 @@ function test1(panel) {
             .enter()
             .append("rect")
             .attr("y", d => yScale(yValue(d)) )
+            .attr("x", 50)
             .attr("width", d => xScale(xValue(d)))
             .attr("height", d => yScale(yValue(Math.abs(d))))
 
