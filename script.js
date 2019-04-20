@@ -71,14 +71,33 @@ function showVisualisation(type, button) {
 
 function makeFilterOptions() {
     // Players
+    let playerPanel = document.getElementsByClassName('visgrid--view-player')[0]
+        .getElementsByClassName('visgrid__panel--description')[0];
+
     let playersSelect = d3.select('.visgrid--view-player')
-        .select('.visgrid__panel--description')
+        .select('.visgrid__panel--description1')
         .append('select')
         .attr('class', 'select .visgrid__select--player')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(playersPath).then(function(data) {
         playersSelect
+            .selectAll('option')
+            .data(data)
+            .enter()
+            .append('option')
+            .text(function(d) {return d["Name"]});
+    });
+
+    let playersSelect2 = d3.select('.visgrid--view-player')
+        .select('.visgrid__panel--description2')
+        .append('select')
+        .attr('class', 'select .visgrid__select--player2')
+        .attr('transform', `translate(${playerPanel.offsetWidth-50},0)`)
+        .on('change', function() {onFilterChange(this)});
+
+    d3.csv(playersPath).then(function(data) {
+        playersSelect2
             .selectAll('option')
             .data(data)
             .enter()
@@ -102,8 +121,11 @@ function makeFilterOptions() {
     });
 
     // Nationalities
+    let nationPanel = document.getElementsByClassName('visgrid--view-nationality')[0]
+        .getElementsByClassName('visgrid__panel--description')[0];
+
     let nationalitySelect = d3.select('.visgrid--view-nationality')
-        .select('.visgrid__panel--description')
+        .select('.visgrid__panel--description1')
         .append('select')
         .attr('class', 'select .visgrid__select--nationality')
         .on('change', function() {onFilterChange(this)});
@@ -115,17 +137,38 @@ function makeFilterOptions() {
             .append('option')
             .text(function(d) {return d["Nationality"]});
     });
+
+    let nationalitySelect2 = d3.select('.visgrid--view-nationality')
+        .select('.visgrid__panel--description2')
+        .append('select')
+        .attr('class', 'select .visgrid__select--nationality2')
+        .attr('align', "right")
+        .on('change', function() {onFilterChange(this)});
+
+    d3.csv(nationalitiesPath).then(function(data) {
+        nationalitySelect2
+            .selectAll('option')
+            .data(data).enter()
+            .append('option')
+            .text(function(d) {return d["Nationality"]});
+    });
 }
 
 function onFilterChange(selection) {
     if (selection.classList.contains(".visgrid__select--player")) {
         playerFilter = d3.select(selection).property('value');
     }
+    else if (selection.classList.contains(".visgrid__select--player2")) {
+        playerFilter2 = d3.select(selection).property('value');
+    }
     else if (selection.classList.contains(".visgrid__select--tournament")) {
         tournamentFilter = d3.select(selection).property('value');
     }
     else if (selection.classList.contains(".visgrid__select--nationality")) {
         nationalityFilter1 = d3.select(selection).property('value');
+    }
+    else if (selection.classList.contains(".visgrid__select--nationality2")) {
+        nationalityFilter2 = d3.select(selection).property('value');
     }
 }
 
@@ -228,6 +271,7 @@ function winPercentBarChartPanel(panel) {
 function surfacesOverTime(panel) {
   d3.csv(dataPath).then(function(data) {
 
+      // Based off https://observablehq.com/@d3/stacked-bar-chart
 
       let aggregated = d3.nest()
           .key(d => d["tourney_date"].substring(0,6))
@@ -248,57 +292,72 @@ function surfacesOverTime(panel) {
           surfaces.push(record);
       });
 
-      console.log(surfaces);
-
       let monthParse = d3.timeParse("%Y%m");
-
-      /*
-      let prestack = ["Clay", "Grass", "Hard", "Carpet", "NA"].map(function(surface) {
-          return surfaces.map(function(d) {
-              return {x: monthParse(d["month"]), y: +d[surface]};
-          });
-      });
-      console.log(prestack);
-      */
-
-      // Based off https://observablehq.com/@d3/stacked-bar-chart
+      let scaleDateFormat = d3.timeFormat("%Y\n%m");
 
       let series = d3.stack().keys(["Clay", "Grass", "Hard", "Carpet", "NA"])(surfaces);
-      console.log(series);
 
       let svg = d3.select(panel).select('svg');
       let width = panel.offsetWidth;
       let height = panel.offsetHeight;
-      let margin = {top: 1, right: 1, bottom: 1, left: 1};
-      // Making x, y, and colours
+      let margin = {top: 50, right: 50, bottom: 50, left: 50};
 
+
+      // Making x-scale, y-scale, and colour-scale
       let x = d3.scaleBand()
           .domain(surfaces.map(d => d["month"]))
-          .range([0, width]);
+          .range([margin.left, width-margin.right]);
 
-      // console.log(width);
-      // console.log(x("201602"));
 
       let y = d3.scaleLinear()
-          .domain([0, d3.max(series, function(d) {return d3.max(d, function(d) {return d[1] + d[1]; }); })])
-          .range([height, 0]);
-
-      // console.log(d3.max(series, function(d) {return d3.max(d, function(d) {return d[1]; }); }));
+          .domain([0, d3.max(series, function(d) {return d3.max(d, function(d) {return d[1]; }); })])
+          .range([height-margin.bottom, margin.top]);
 
       let color = d3.scaleOrdinal()
           .domain(series.map(d => d.key))
           .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), series.length).reverse())
           .unknown("#ccc");
 
-      console.log(color("Clay"));
-      console.log(color("Hard"));
-      console.log(color("Grass"));
+      // Axes and legend
+      xAxis = g => g
+          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x).tickSizeOuter(0).tickFormat(x => scaleDateFormat(monthParse(x))))
+          .call(g => g.selectAll(".domain").remove());
 
+      yAxis = g => g
+          .attr("transform", `translate(${margin.left}, 0)`)
+          .call(d3.axisLeft(y).ticks(null, "s"));
+
+      legend = svg => {
+          const g = svg
+              .attr("font-family", "sans-serif")
+              .attr("font-size", 10)
+              .attr("text-anchor", "end")
+              .attr("transform", `translate(${width - (margin.right/2)},${margin.top})`)
+              .selectAll("g")
+              .data(series.slice().reverse())
+              .join("g")
+              .attr("transform", (d, i) => `translate(0,${i * 20})`);
+
+          g.append("rect")
+              .attr("x", -19)
+              .attr("width", 19)
+              .attr("height", 19)
+              .attr("fill", d => color(d.key));
+
+          g.append("text")
+              .attr("x", -24)
+              .attr("y", 9.5)
+              .attr("dy", "0.35em")
+              .text(d => d.key);
+      };
+
+      // Actually produce the plot
       svg.append("g")
           .selectAll("g")
           .data(series)
           .join("g")
-          .attr("fill", function(d) { console.log(d.key); console.log(color(d.key)); return color(d.key); } )
+          .attr("fill", d => color(d.key) )
           .selectAll("rect")
           .data(d => d)
           .join("rect")
@@ -306,12 +365,30 @@ function surfacesOverTime(panel) {
           .attr("y", d => y(d[1]))
           .attr("height", d => y(d[0]) - y(d[1]))
           .attr("width", x.bandwidth());
-          // .attr("fill", function(d) { console.log(d.key); console.log(color(d.key)); return color(d.key); });
 
+      svg.append("g")
+          .call(xAxis)
+          .selectAll("text")
+          .attr("y", 0)
+          .attr("x", 9)
+          .attr("dy", ".35em")
+          .attr("transform", "rotate(90)")
+          .style("text-anchor", "start");
 
+      svg.append("g")
+          .call(yAxis);
 
-    //var transposed = d3.layout.stack()([])
+      svg.append("g")
+          .call(legend);
 
+      svg.append("text")
+          .attr("x", (width / 2))
+          .attr("y", (margin.top / 2))
+          .attr("text-anchor", "middle")
+          .style("font-size", "16px")
+          .style("text-decoration", "underline")
+          .style("font-family", "sans-serif")
+          .text("Surface types over time");
   });
 }
 
@@ -549,7 +626,8 @@ const tournamentsPath = "data/tournaments.csv";
 const nationalitiesPath = "data/nationalities.csv";
 
 let playerFilter = "";
+let playerFilter2 = "";
 let tournamentFilter = "";
 let nationalityFilter1 = "";
-// let nationalityFilter2 = "";
+let nationalityFilter2 = "";
 //d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});
