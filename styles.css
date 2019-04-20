@@ -32,12 +32,12 @@
     position: relative;
     margin-top: 3px;
     width:calc(100% - 7px);
-    height: calc(100% - 100px);
+    height: calc(100% - 125px);
 }
 .visgrid__panel{
     position: relative;
     background-color: #dddddd;
-    overflow: scroll;
+    overflow: auto;
 }
 .visgrid__panel--description{
     background-color: #eeeeee;
@@ -45,7 +45,7 @@
 
 /* Dropdown menus */
 .visgrid__dropdown-menu{
-    position: static;
+    position: fixed;
     display: inline-block;
     opacity: 0.3;
 }
@@ -94,10 +94,9 @@ p{
 }
 svg{
     width: 100%;
-    height: 1000%;
+    height: 100%;
 }
 rect{
-    fill: gold;
     stroke: #999999;
     stroke-width: 2px;
 }

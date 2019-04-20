@@ -44,17 +44,28 @@ window.onclick = function(event) {
 
 function showVisualisation(type, button) {
     let panel = button.parentElement.parentElement.parentElement;
+
     // Removing previous visualisation
     let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    panelSvg.style.height = "100%";
+    panelSvg.style.width = "100%";
     panelSvg.parentNode.replaceChild(panelSvg.cloneNode(false), panelSvg);
-    if (type === 'WinRates') {
-        winPercentBarChartPanel(panel);
-    }
-    else if (type === 'Template') {
-        templateFunction(panel);
-    }
-    else if (type === 'test1'){
-        test1(panel)
+
+    switch(type) {
+        case('WinRates'):
+            winPercentBarChartPanel(panel);
+            break;
+        case('Template'):
+            templateFunction(panel);
+            break;
+        case('SurfacesOverTime'):
+            surfacesOverTime(panel);
+            break;
+        case('test1'):
+            test1(panel);
+            break;
+        default:
+            break;
     }
 }
 
@@ -122,6 +133,14 @@ function winPercentBarChartPanel(panel) {
     let nameStats = [];
     let idsDone = {};
     let currentIndex = 0;
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+
+    let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    panelSvg.style.height = height*100;
+    panelSvg.style.width = width*100;
 
     d3.csv(dataPath).then(function(data) {
 
@@ -208,11 +227,106 @@ function winPercentBarChartPanel(panel) {
 
 function surfacesOverTime(panel) {
   d3.csv(dataPath).then(function(data) {
-    
+
+
+      let aggregated = d3.nest()
+          .key(d => d["tourney_date"].substring(0,6))
+          .key(d => d["surface"])
+          .rollup(function(d) { return {"length": d.length};
+          })
+          .entries(data);
+
+      let surfaces = [];
+
+      aggregated.forEach(function(d) {
+          let record = {"month": 0, "Clay": 0, "Grass": 0, "Hard": 0, "Carpet": 0, "NA": 0};
+          record["month"] = d["key"];
+          for (let i =0; i < d["values"].length; i++) {
+              let j = d["values"][i];
+              record[j["key"]] = j["value"]["length"];
+          }
+          surfaces.push(record);
+      });
+
+      console.log(surfaces);
+
+      let monthParse = d3.timeParse("%Y%m");
+
+      /*
+      let prestack = ["Clay", "Grass", "Hard", "Carpet", "NA"].map(function(surface) {
+          return surfaces.map(function(d) {
+              return {x: monthParse(d["month"]), y: +d[surface]};
+          });
+      });
+      console.log(prestack);
+      */
+
+      // Based off https://observablehq.com/@d3/stacked-bar-chart
+
+      let series = d3.stack().keys(["Clay", "Grass", "Hard", "Carpet", "NA"])(surfaces);
+      console.log(series);
+
+      let svg = d3.select(panel).select('svg');
+      let width = panel.offsetWidth;
+      let height = panel.offsetHeight;
+      let margin = {top: 1, right: 1, bottom: 1, left: 1};
+      // Making x, y, and colours
+
+      let x = d3.scaleBand()
+          .domain(surfaces.map(d => d["month"]))
+          .range([0, width]);
+
+      // console.log(width);
+      // console.log(x("201602"));
+
+      let y = d3.scaleLinear()
+          .domain([0, d3.max(series, function(d) {return d3.max(d, function(d) {return d[1] + d[1]; }); })])
+          .range([height, 0]);
+
+      // console.log(d3.max(series, function(d) {return d3.max(d, function(d) {return d[1]; }); }));
+
+      let color = d3.scaleOrdinal()
+          .domain(series.map(d => d.key))
+          .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), series.length).reverse())
+          .unknown("#ccc");
+
+      console.log(color("Clay"));
+      console.log(color("Hard"));
+      console.log(color("Grass"));
+
+      svg.append("g")
+          .selectAll("g")
+          .data(series)
+          .join("g")
+          .attr("fill", function(d) { console.log(d.key); console.log(color(d.key)); return color(d.key); } )
+          .selectAll("rect")
+          .data(d => d)
+          .join("rect")
+          .attr("x", (d, i) => x(d.data["month"]))
+          .attr("y", d => y(d[1]))
+          .attr("height", d => y(d[0]) - y(d[1]))
+          .attr("width", x.bandwidth());
+          // .attr("fill", function(d) { console.log(d.key); console.log(color(d.key)); return color(d.key); });
+
+
+
+    //var transposed = d3.layout.stack()([])
+
   });
 }
 
 function templateFunction(panel) {
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+
+    // IF THE VISUALIZATION SCROLLS, REPLACE THE SVG WITH A BIGGER ONE
+    let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    panelSvg.style.height = height*100;
+    panelSvg.style.width = width*100;
+
+
     // Load the data
     d3.csv(dataPath).then(function(data) {
 
