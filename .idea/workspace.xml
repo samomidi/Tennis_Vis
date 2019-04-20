@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5f58f88-ab39-493c-9d7d-12eb8c704d96" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playerinfo.html" beforeDir="false" afterPath="$PROJECT_DIR$/playerinfo.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/playerinfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/playerinfo.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,12 +17,12 @@
     <window id="1">
       <content type="file-editors">
         <state>
-          <leaf>
+          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/script.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="1070">
-                    <caret line="252" column="42" lean-forward="true" selection-start-line="252" selection-start-column="42" selection-end-line="252" selection-end-column="42" />
+                  <state relative-caret-position="1878">
+                    <caret line="252" column="42" selection-start-line="252" selection-start-column="42" selection-end-line="252" selection-end-column="42" />
                   </state>
                 </provider>
               </entry>
@@ -36,8 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/playerinfo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+            <state relative-caret-position="-624">
+              <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="53" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -62,11 +63,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/playerinfo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="325" selection-start-line="325" selection-end-line="325" />
-              <folding>
-                <element signature="n#!!block;n#templateFunction#0" />
-              </folding>
+            <state relative-caret-position="532">
+              <caret line="295" column="37" lean-forward="true" selection-start-line="295" selection-start-column="37" selection-end-line="295" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="203">
+              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -74,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="86" column="16" lean-forward="true" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
+            <state relative-caret-position="1462">
+              <caret line="86" column="16" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -83,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Plan.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="37" column="10" lean-forward="true" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
+            <state relative-caret-position="629">
+              <caret line="37" column="10" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -103,9 +110,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="package.json" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -120,13 +128,17 @@
       <find>getElementsByClassName</find>
       <find>showDropdown</find>
       <find>visgrid__dropdown-menu-button</find>
-      <find>templateFunction</find>
-      <find>showVisualisation</find>
       <find>WinRates</find>
-      <find>test1</find>
       <find>winPercentBarChartPanel</find>
       <find>name_stats</find>
       <find>gold</find>
+      <find>player</find>
+      <find>histogram</find>
+      <find>templateFunction</find>
+      <find>showVisualisation</find>
+      <find>panel</find>
+      <find>test1</find>
+      <find>svg</find>
     </findStrings>
     <replaceStrings>
       <replace>loser</replace>
@@ -149,13 +161,16 @@
         <option value="$PROJECT_DIR$/script.js" />
         <option value="$PROJECT_DIR$/Plan.txt" />
         <option value="$PROJECT_DIR$/playerinfo.html" />
+        <option value="$PROJECT_DIR$/test.js" />
+        <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/playerinfo.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="390" />
-    <option name="height" value="290" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
+    <option name="width" value="1020" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -193,6 +208,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -206,10 +222,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.playerinfo.html">
-    <configuration name="basicPage.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/d3-project-cs5044/basicPage.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="JavaScript Debug.test.html">
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63343/d3-project-cs5044/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
@@ -219,16 +232,19 @@
     <configuration name="playerinfo.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63343/d3-project-cs5044/playerinfo.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
+    <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/d3-project-cs5044/test.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="playerinfo.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="playerinfo.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.test.html" />
         <item itemvalue="JavaScript Debug.playerinfo.html" />
         <item itemvalue="Node.js.playerinfo.js" />
         <item itemvalue="JavaScript Debug.oldPlotting.html" />
         <item itemvalue="JavaScript Debug.index.html" />
-        <item itemvalue="JavaScript Debug.basicPage.html" />
       </list>
     </recent_temporary>
   </component>
@@ -245,6 +261,7 @@
       <workItem from="1554909212930" duration="6572000" />
       <workItem from="1555005869538" duration="6369000" />
       <workItem from="1555162385301" duration="16554000" />
+      <workItem from="1555680674811" duration="10599000" />
     </task>
     <task id="LOCAL-00001" summary="xdss">
       <created>1555346064783</created>
@@ -253,17 +270,24 @@
       <option name="project" value="LOCAL" />
       <updated>1555346064783</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added the feedback file from Uta">
+      <created>1555434228508</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1555434228509</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36627000" />
+    <option name="totallyTimeSpent" value="48544000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
+    <frame x="-7" y="0" width="1020" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.06619386" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17718941" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -277,7 +301,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32932165" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -289,7 +313,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="xdss" />
-    <option name="LAST_COMMIT_MESSAGE" value="xdss" />
+    <MESSAGE value="added the feedback file from Uta" />
+    <option name="LAST_COMMIT_MESSAGE" value="added the feedback file from Uta" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/extLibs/http_d3js.org_d3.v5.js" />
@@ -298,13 +323,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="467">
           <caret line="117" column="43" lean-forward="true" selection-start-line="117" selection-start-column="43" selection-end-line="117" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plan.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="37" column="10" lean-forward="true" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -339,6 +357,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="86" column="16" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plan.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="10" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/GeneralStyle.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -346,10 +378,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1878">
+          <caret line="252" column="42" selection-start-line="252" selection-start-column="42" selection-end-line="252" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="3" selection-start-line="50" selection-start-column="3" selection-end-line="50" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#112#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/playerinfo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+        <state relative-caret-position="-624">
+          <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="53" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -370,27 +426,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="86" column="16" lean-forward="true" selection-start-line="86" selection-start-column="16" selection-end-line="86" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1070">
-          <caret line="252" column="42" lean-forward="true" selection-start-line="252" selection-start-column="42" selection-end-line="252" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/playerinfo.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="325" selection-start-line="325" selection-end-line="325" />
-          <folding>
-            <element signature="n#!!block;n#templateFunction#0" />
-          </folding>
+        <state relative-caret-position="532">
+          <caret line="295" column="37" lean-forward="true" selection-start-line="295" selection-start-column="37" selection-end-line="295" selection-end-column="37" />
         </state>
       </provider>
     </entry>

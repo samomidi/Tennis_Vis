@@ -1,3 +1,5 @@
+
+
 function openTab(evt, tabName) {
     // Declare all variables
     let i, tabContent, tabLinks;
@@ -274,49 +276,45 @@ function test1(panel) {
         // for (i=0; i <nameStats.length; i++){
         //     console.log(nameStats[i]["Name"])
         // }
-
-
-        console.log(nameStats);
-
         nameStats.forEach(function(d) {
             d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
         });
 
-        // Making bar chart
+        console.log(nameStats);
+
+
+        // Making Histogram of ages
+        const xValue = d => d.Name;
+        const yValue = d => d.WinPercent;
+
+        const xScale = d3.scaleBand()
+            .domain([nameStats.map(xValue)])
+            .range([0,innerWidth]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(nameStats, yValue)])
+            .range([0, innerHeight]);
+
+
         d3.select(panel)
             .select("svg")
-            .selectAll("circle")
+            .selectAll("rect")
             .data(nameStats)
             .enter()
             .append("rect")
-            .attr("width", function(d) {
-                return d["WinPercent"] * 1000;
-            })
-            .attr("height", 20)
-            .attr("x", 50)
-            .attr("y", function(d, i) { // i in the index
-                return i * 50 + 50;
-            })
-            .on("mouseenter", function(d, i) {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "#FF9C00");
-                d3.select("svg")
-                    .append("text")
-                    .attr("class", "tooltip")
-                    .attr("x", 50 + 10 + d["WinPercent"]*10)
-                    .attr("y", (i * 50 + 50 + 15))
-                    .text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "gold");
-                d3.selectAll(".tooltip")
-                    .remove();
-            });
+            .attr("y", d => yScale(yValue(d)) )
+            .attr("width", d => xScale(xValue(d)))
+            .attr("height", d => yScale(yValue(d)))
+
+
+
+
+
+
+
+
+
+
     });
 
 }
