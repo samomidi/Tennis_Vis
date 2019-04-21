@@ -73,8 +73,8 @@ function showVisualisation(type, button) {
         case('TourneyMinutes'):
             TourneyMinutes(panel);
             break;
-        case('PlayerGameTime'):
-            PlayerGameTime(panel);
+        case('ATPChart'):
+            ATPRankPointBarChart(panel);
             break;
         default:
             break;
@@ -182,6 +182,7 @@ function onFilterChange(selection) {
     }
 }
 
+
 function makePlayerDetails(dropdown, player) {
 
 
@@ -247,15 +248,23 @@ function makePlayerDetails(dropdown, player) {
             d["WinRateAgainst"] = d["WonAgainst"]/(d["GamesAgainst"]);
         });
 
-        console.log(tournaments);
+        let latestGame = maxBy(games, "tourney_date");
+        let latestGameVar = "winner_rank_points";
+        if (latestGame["winner_id"] !== player) {
+            latestGameVar = "loser_rank_points";
+        }
+
 
         d3.select(dropdown.parentNode)
             // Name
             .append("p")
             .text(`Name: ${name}`)
+            // Most recent ranking
+            .append("p")
+            .text(`ATP Ranking: ${latestGame[latestGameVar]}`)
             // Win rate
             .append("p")
-            .text(`Win Rate: ${wins.length/(wins.length+losses.length)*100}%`)
+            .text(`Win Rate: ${(wins.length/(wins.length+losses.length)*100).toFixed(3)}%`)
             // Number of tournaments played
             .append("p")
             .text(`Tournaments attended: ${tournaments.length}`)
@@ -268,9 +277,12 @@ function makePlayerDetails(dropdown, player) {
             .text(`Best win rate against: ${maxBy(opponents, "WinRateAgainst")["Name"]}, 
             ${maxBy(opponents, "WinRateAgainst")["WinRateAgainst"]*100}%`)
             // Worst opponent
-            // Most recent ranking
+            .append("p")
+            .text(`Worst win rate against: ${minBy(opponents, "WinRateAgainst")["Name"]}, 
+            ${minBy(opponents, "WinRateAgainst")["WinRateAgainst"]*100}%`)
     })
 }
+
 
 function maxBy(array, value) {
     let currentMax = array[0];
@@ -282,6 +294,7 @@ function maxBy(array, value) {
     return currentMax;
 }
 
+
 function minBy(array, value) {
     let currentMax = array[0];
     array.forEach(function(d) {
@@ -291,6 +304,7 @@ function minBy(array, value) {
     });
     return currentMax;
 }
+
 
 function winPercentBarChartPanel(panel) {
     let nameStats = [];
@@ -385,7 +399,7 @@ function winPercentBarChartPanel(panel) {
                     .attr("class", "tooltip")
                     .attr("x", width/4)
                     .attr("y", height/4)
-                    .text(d["Name"] + ": " + d["WinPercent"] + "% win rate")
+                    .text(`${d["Name"]}: ${(d["WinPercent"]*100).toFixed(3)}% win rate`)
                     .attr("font-family", "sans-serif")
                     .attr("font-size", 14);
                 svg
@@ -414,6 +428,155 @@ function winPercentBarChartPanel(panel) {
             .style("text-decoration", "underline")
             .style("font-family", "sans-serif")
             .text("Player Win Rates (Only for >50 Professional games)");
+
+
+        // Axis
+        let yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
+}
+
+
+function ATPRankPointBarChart(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                if (d["tourney_date"] > nameStats[id]["Date"]) {
+                    nameStats[id]["Date"] = d["tourney_date"];
+                    nameStats[id]["RankPoints"] = parseInt(d["winner_rank_points"]);
+                }
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "IOC": d["winner_ioc"],
+                    "Date": d["tourney_date"],
+                    "RankPoints": parseInt(d["winner_rank_points"])
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                if (d["tourney_date"] > nameStats[id]["Date"]) {
+                    nameStats[id]["Date"] = d["tourney_date"];
+                    nameStats[id]["RankPoints"] = parseInt(d["loser_rank_points"]);
+                }
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "IOC": d["loser_ioc"],
+                    "Date": d["tourney_date"],
+                    "RankPoints": parseInt(d["loser_rank_points"])
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        let minRankPoints = 500;
+        // Filter more than x rank points only
+        nameStats = nameStats.filter(d => d["RankPoints"]> minRankPoints);
+        nameStats = nameStats.sort(function(a, b) {return b["RankPoints"] - a["RankPoints"]});
+
+
+
+        let timeParser = d3.timeParse("%Y%m%d");
+        let timeFormatter = d3.timeFormat("%a %d %B %Y");
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([d3.min(nameStats, d=>d["RankPoints"]), d3.max(nameStats, d=>d["RankPoints"])])
+            .range([height-margin.bottom, margin.top]);
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["RankPoints"]))
+            .attr("width", 3)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["RankPoints"]))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", height/4)
+                    .text(d["Name"] + ": " + d["RankPoints"] + " Rank Points")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", (height/4)+20)
+                    .text(`Date : ${timeFormatter(timeParser(d["Date"]))}`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/4)
+                    .attr("y", (height/4)+40)
+                    .text("Nationality: " + d["IOC"])
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            });
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text(`Player Rank Points (Only for >${minRankPoints})`);
 
 
         // Axis
@@ -853,6 +1016,109 @@ function templateFunction(panel) {
 }
 
 
+function Test1(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                nameStats[id]["Wins"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 1,
+                    "Losses": 0
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                nameStats[id]["Losses"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 0,
+                    "Losses": 1
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+
+
+        // for (i=0; i <nameStats.length; i++){
+        //     console.log(nameStats[i]["Name"])
+        // }
+        nameStats.forEach(function(d) {
+            d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
+        });
+
+        console.log(nameStats);
+
+
+        // Making Histogram of ages
+        // const svg = d3.select('svg');
+        //
+        // const width = +svg.attr('width');
+        // const height = +svg.attr('height');
+        //
+        // const xValue = d => d.Name;
+        // const yValue = d => d.WinPercent;
+        // const margin = { top: 20, right: 40, bottom: 20, left: 100 };
+        // const innerWidth = width - margin.left - margin.right;
+        // const innerHeight = height - margin.top - margin.bottom;
+        //
+        // const xScale = d3.scaleBand()
+        //     .domain([nameStats.map(xValue)])
+        //     .range([0,innerWidth]);
+        //
+        // const yScale = d3.scaleLinear()
+        //     .domain([0, d3.max(nameStats, yValue)])
+        //     .range([0, innerHeight]);
+
+
+        d3.select(panel)
+            .select("svg")
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            // .attr("y", d => yScale(yValue(d)) )
+            // .attr("x", 50)
+            // .attr("width", d => xScale(xValue(d)))
+            // .attr("height", d => yScale(yValue(Math.abs(d))))
+            // .attr("y", 50 )
+            // .attr("x", 50)
+            // .attr("width", 100)
+            // .attr("height", 100);
+            .attr("width", function(d) {
+                return d["WinPercent"] * 1000;
+            })
+            .attr("height", 20)
+            .attr("x", 50)
+            .attr("y", function(d, i) { // i in the index
+                return i * 50 + 50;
+            })
+
+    });
+
+}
 
 
 function TourneyMinutes(panel) {
@@ -864,7 +1130,7 @@ function TourneyMinutes(panel) {
     d3.csv(dataPath).then(function(data) {
 
         // Filling name_dict
-        data.forEach(function (d) {
+        data.forEach(function(d) {
             if (d["minutes"] !== "NA") {
                 if (d["tourney_id"] in idsDone) {
                     let id = idsDone[d["tourney_id"]];
@@ -892,21 +1158,13 @@ function TourneyMinutes(panel) {
 
         });
 
-        nameStats = nameStats.filter(d => d["Minutes"] > 2700);
-
-        nameStats = nameStats.sort(function (a, b) {
-            return b["Minutes"] - a["Minutes"]
-        });
-
-        console.log(nameStats);
-
         nameStats.forEach(function (d) {
 
-        })
+        });
 
 
-        // let monthParse = d3.timeParse("%Y%m");
-        // let scaleDateFormat = d3.timeFormat("%Y\n%m");
+        let monthParse = d3.timeParse("%Y%m");
+        let scaleDateFormat = d3.timeFormat("%Y\n%m");
 
 
         let svg = d3.select(panel).select('svg');
@@ -916,251 +1174,39 @@ function TourneyMinutes(panel) {
 
         let x = d3.scaleBand()
             .domain(nameStats.map(d => d["ID"]))
-            .range([margin.left, width - margin.right]);
+            .range([margin.left, width-margin.right]);
 
         let y = d3.scaleLinear()
-            .domain([0, d3.max(nameStats, d => d["Minutes"])])
-            .range([height - margin.bottom, margin.top]);
+            .domain([0,d3.max(nameStats, d => d["Minutes"])])
+            .range([height-margin.bottom, margin.top]);
 
-        // Now making the bar chart
         svg
             .selectAll("rect")
             .data(nameStats)
             .enter()
             .append("rect")
-            .attr("height", function (d) {
-
-                return height-margin.bottom - y(d["Minutes"]);
+            .attr("height", function(d) {
+                // console.log(y(d["Minutes"]));
+                return y(d["Minutes"]);
             })
             .attr("width", 3)
-            .attr("y", d =>  y(d["Minutes"]))
-            .attr("x", function (d) {
+            .attr("y", d => height-y(d["Minutes"]))
+            .attr("x", function(d) {
                 // console.log(x(d["ID"]));
                 return x(d["ID"]);
-            })
-            .attr("fill","#fcff07")
-            .on("mouseenter", function(d, i) {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "#FF9C00");
-                svg
-                    .append("text")
-                    .attr("class", "tooltip")
-                    .attr("x", width/4)
-                    .attr("y", height/4)
-                    .text(d["Name"] + ": " + d["Minutes"] + " Minutes")
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 14);
-                svg
-                    .append("text")
-                    .attr("class", "tooltip")
-                    .attr("x", width/4)
-                    .attr("y", (height/4)+20)
-                    .text("ID: " + d["ID"])
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 14);
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "#fcff07");
-                svg.selectAll(".tooltip")
-                    .remove();
             });
-
-        svg.append("text")
-            .attr("x", (width / 2))
-            .attr("y", (margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .style("font-family", "sans-serif")
-            .text("Length of the tournaments, above 2700 Mins");
-
-        svg
-            .enter()
-            .transition()
-            .duration(500)
-            .attr("height", 0)
-            .attr("width", 0)
-            .attr("y", 0)
-            .attr("x", 0);
-
-
-
-
-        // Axis
-        yAxis = g => g
-            .attr("transform", `translate(${margin.left-1}, 0)`)
-            .call(d3.axisLeft(y).ticks(null, "s"));
-
-        svg.append("g").call(yAxis);
 
 
     });
-
 }
 
-function PlayerGameTime(panel) {
 
-    let nameStats = [];
-    let idsDone = {};
-    let currentIndex = 0;
-
-    d3.csv(dataPath).then(function(data) {
-
-        // Filling name_dict
-        data.forEach(function (d) {
-            if (d["minutes"] !== "NA") {
-                if (d["winner_id"] in idsDone) {
-                    let id = idsDone[d["winner_id"]];
-                    // console.log(d["minutes"]);
-                    // console.log(parseInt(d.minutes));
-                    nameStats[id]["Minutes"] = nameStats[id]["Minutes"] + parseInt(d["minutes"]);
-                } else {
-                    // console.log(parseInt(d.Minutes));
-                    let newTourney = {
-                        "ID": d["winner_id"],
-                        "Name": d["winner_name"],
-                        "Minutes": parseInt(d["minutes"])
-
-                    };
-                    nameStats.push(newTourney);
-                    idsDone[d["winner_id"]] = currentIndex;
-                    currentIndex++;
-                }
-
-                if (d["loser_id"] in idsDone) {
-                    let id = idsDone[d["loser_id"]];
-                    nameStats[id]["Minutes"] = nameStats[id]["Minutes"] + parseInt(d["minutes"]);
-                } else {
-                    let newPlayer = {
-                        "ID": d["winner_id"],
-                        "Name": d["winner_name"],
-                        "Minutes": parseInt(d["minutes"])
-                    };
-                    nameStats.push(newPlayer);
-                    idsDone[d["loser_id"]] = currentIndex;
-                    currentIndex++;
-
-                }
-            }
-
-        });
-
-        console.log(nameStats);
-
-        nameStats = nameStats.filter(d => d["Minutes"] > 2700);
-
-        nameStats = nameStats.sort(function (a, b) {
-            return b["Minutes"] - a["Minutes"]
-        });
-
-        // console.log(nameStats);
-        //
-        // nameStats.forEach(function (d) {
-        //
-        // })
-        console.log(nameStats);
-
-        // let monthParse = d3.timeParse("%Y%m");
-        // let scaleDateFormat = d3.timeFormat("%Y\n%m");
-
-
-        let svg = d3.select(panel).select('svg');
-        let width = panel.offsetWidth;
-        let height = panel.offsetHeight;
-        let margin = {top: 50, right: 50, bottom: 50, left: 50};
-
-        let x = d3.scaleBand()
-            .domain(nameStats.map(d => d["ID"]))
-            .range([margin.left, width - margin.right]);
-
-        let y = d3.scaleLinear()
-            .domain([0, d3.max(nameStats, d => d["Minutes"])])
-            .range([height - margin.bottom, margin.top]);
-
-        // Now making the bar chart
-        svg
-            .selectAll("rect")
-            .data(nameStats)
-            .enter()
-            .append("rect")
-            .attr("height", function (d) {
-
-                return height-margin.bottom - y(d["Minutes"]);
-            })
-            .attr("width", 3)
-            .attr("y", d =>  y(d["Minutes"]))
-            .attr("x", function (d) {
-                // console.log(x(d["ID"]));
-                return x(d["ID"]);
-            })
-            .attr("fill","#fcff07")
-            .on("mouseenter", function(d) {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "#FF9C00");
-                svg
-                    .append("text")
-                    .attr("class", "tooltip")
-                    .attr("x", width/4)
-                    .attr("y", height/4)
-                    .text(d["Name"] + ": " + d["Minutes"] + " Minutes")
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 14);
-                svg
-                    .append("text")
-                    .attr("class", "tooltip")
-                    .attr("x", width/4)
-                    .attr("y", (height/4)+20)
-                    .text("ID: " + d["ID"])
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 14);
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("fill", "#fcff07");
-                svg.selectAll(".tooltip")
-                    .remove();
-            });
-
-        svg.append("text")
-            .attr("x", (width / 2))
-            .attr("y", (margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .style("font-family", "sans-serif")
-            .text("Length of the tournaments, above 2700 Mins");
-
-        // svg
-        //     .enter()
-        //     .transition()
-        //     .duration(500)
-        //     .attr("height", 0)
-        //     .attr("width", 0)
-        //     .attr("y", 0)
-        //     .attr("x", 0);
-
-
-
-
-        // Axis
-        yAxis = g => g
-            .attr("transform", `translate(${margin.left-1}, 0)`)
-            .call(d3.axisLeft(y).ticks(null, "s"));
-
-        svg.append("g").call(yAxis);
-
-        console.log(nameStats);
+function makeNameDict() {
+    d3.csv(playersPath).then(function(data) {
+        data.forEach(function(d) {
+            nameIDDict[d["ID"]] = d["Name"];
+        })
     });
-
 }
 
 const dataPath = "data/three_years.csv";
