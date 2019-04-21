@@ -8,7 +8,7 @@
 }
 .tabs button{
     height: 100%;
-    width: 25%;
+    width: 50%;
     background-color: inherit;
     float: left;
     border: none;
@@ -54,7 +54,7 @@
     background-color: #3498DB;
     color: white;
     padding: 10px;
-    font-size: 10px;
+    font-size: 12px;
     border: none;
     cursor: pointer;
 

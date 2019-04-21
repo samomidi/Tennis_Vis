@@ -79,6 +79,17 @@ function showVisualisation(type, button) {
         case('PlayerGameTime'):
             PlayerGameTime(panel);
             break;
+
+        // By Player
+        case('WinRatesPlayer'):
+            winPercentPlayerBarChart(panel);
+            break;
+        case('WinsPlayer'):
+            winsAgainstPlayerBarChart(panel);
+            break;
+        case('LossesPlayer'):
+            lossesAgainstPlayerBarChart(panel);
+            break;
         default:
             break;
     }
@@ -90,7 +101,7 @@ function makeFilterOptions() {
     let playersSelect = d3.select('.visgrid--view-player')
         .select('.visgrid__panel--description1')
         .append('select')
-        .attr('class', 'select .visgrid__select--player')
+        .attr('class', 'select visgrid__select--player')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(playersPath).then(function(data) {
@@ -106,7 +117,7 @@ function makeFilterOptions() {
     let playersSelect2 = d3.select('.visgrid--view-player')
         .select('.visgrid__panel--description2')
         .append('select')
-        .attr('class', 'select .visgrid__select--player2')
+        .attr('class', 'select visgrid__select--player2')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(playersPath).then(function(data) {
@@ -123,7 +134,7 @@ function makeFilterOptions() {
     let tournamentsSelect = d3.select('.visgrid--view-tournament')
         .select('.visgrid__panel--description')
         .append('select')
-        .attr('class', 'select .visgrid__select--tournament')
+        .attr('class', 'select visgrid__select--tournament')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(tournamentsPath).then(function(data) {
@@ -138,7 +149,7 @@ function makeFilterOptions() {
     let nationalitySelect = d3.select('.visgrid--view-nationality')
         .select('.visgrid__panel--description1')
         .append('select')
-        .attr('class', 'select .visgrid__select--nationality')
+        .attr('class', 'select visgrid__select--nationality')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(nationalitiesPath).then(function(data) {
@@ -152,7 +163,7 @@ function makeFilterOptions() {
     let nationalitySelect2 = d3.select('.visgrid--view-nationality')
         .select('.visgrid__panel--description2')
         .append('select')
-        .attr('class', 'select .visgrid__select--nationality2')
+        .attr('class', 'select visgrid__select--nationality2')
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(nationalitiesPath).then(function(data) {
@@ -162,32 +173,49 @@ function makeFilterOptions() {
             .append('option')
             .text(function(d) {return d["Nationality"]});
     });
+
+
+    let playerSelect1 = document.getElementsByClassName("visgrid__select--player")[0];
+    playerSelect1.value = "103819";
+
+    let playerSelect2 = document.getElementsByClassName("visgrid__select--player2")[0];
+    playerSelect2.value = "104925";
 }
 
 
 function onFilterChange(selection) {
-    if (selection.classList.contains(".visgrid__select--player")) {
+    if (selection.classList.contains("visgrid__select--player")) {
         playerFilter = d3.select(selection).property('value');
         makePlayerDetails(selection, playerFilter);
     }
-    else if (selection.classList.contains(".visgrid__select--player2")) {
+    else if (selection.classList.contains("visgrid__select--player2")) {
         playerFilter2 = d3.select(selection).property('value');
         makePlayerDetails(selection, playerFilter2);
     }
-    else if (selection.classList.contains(".visgrid__select--tournament")) {
+    else if (selection.classList.contains("visgrid__select--tournament")) {
         tournamentFilter = d3.select(selection).property('value');
     }
-    else if (selection.classList.contains(".visgrid__select--nationality")) {
+    else if (selection.classList.contains("visgrid__select--nationality")) {
         nationalityFilter1 = d3.select(selection).property('value');
     }
-    else if (selection.classList.contains(".visgrid__select--nationality2")) {
+    else if (selection.classList.contains("visgrid__select--nationality2")) {
         nationalityFilter2 = d3.select(selection).property('value');
     }
 }
 
+function switchPlayerFilter() {
+    let filterLeft = document.getElementsByClassName("visgrid__select--player")[0];
+    let filterRight = document.getElementsByClassName("visgrid__select--player2")[0];
+
+    let filterLeftOldVal = filterLeft.value;
+
+    filterLeft.value = filterRight.value;
+    filterRight.value = filterLeftOldVal;
+    onFilterChange(filterLeft);
+    onFilterChange(filterRight);
+}
 
 function makePlayerDetails(dropdown, player) {
-
 
     let name = dropdown.options[dropdown.selectedIndex].text;
 
@@ -271,6 +299,9 @@ function makePlayerDetails(dropdown, player) {
             // Number of tournaments played
             .append("p")
             .text(`Tournaments attended: ${tournaments.length}`)
+            // Number of games played
+            .append("p")
+            .text(`Number of games played: ${games.length}`)
             // Most played
             .append("p")
             .text(`Most Played: ${maxBy(opponents, "GamesAgainst")["Name"]}, 
@@ -284,6 +315,515 @@ function makePlayerDetails(dropdown, player) {
             .text(`Worst win rate against: ${minBy(opponents, "WinRateAgainst")["Name"]}, 
             ${minBy(opponents, "WinRateAgainst")["WinRateAgainst"]*100}%`)
     })
+}
+
+function winPercentPlayerBarChart(panel) {
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        let player = playerFilter;
+
+        let wins = data.filter(d => d["winner_id"] === player);
+        let losses = data.filter(d => d["loser_id"] === player);
+        let games = data.filter(d => d["winner_id"] === player | d["loser_id"] === player);
+
+        let winsByOpponent =  d3.nest().key(d => d["winner_id"]).entries(losses);
+        let lossesByOpponent = d3.nest().key(d => d["loser_id"]).entries(wins);
+
+        // Aggregate Opponents
+        let idsDone = {};
+        let opponents = [];
+        let currentIndex = 0;
+
+        winsByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["LostAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst": 0,
+                    "LostAgainst": d.values.length
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        lossesByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["WonAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst":  d.values.length,
+                    "LostAgainst": 0
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        opponents.forEach(function(d) {
+            d["GamesAgainst"] = d["WonAgainst"] + d["LostAgainst"];
+            d["WinPercent"] = d["WonAgainst"]/(d["GamesAgainst"]);
+        });
+
+
+        // Filter and sort
+        let nameStats = opponents.filter(d => d["GamesAgainst"] > 0);
+        nameStats = nameStats.sort(function(a, b) {return a["WinPercent"] - b["WinPercent"]});
+
+        let neverBeaten = nameStats.filter(d => d["WinPercent"] === 0);
+        let haveBeaten = nameStats.filter(d => d["WinPercent"] > 0);
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, 1])
+            .range([height-margin.bottom, margin.top]);
+
+
+        let numberEntries = nameStats.length;
+
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(haveBeaten)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["WinPercent"]))
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["WinPercent"]))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", height*0.92)
+                    .text(`${d["Name"]}: ${(d["WinPercent"]*100).toFixed(3)}% win rate against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", (height*0.92)+20)
+                    .text(`${d["GamesAgainst"]} matches played against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            })
+            .on("click", function(d) {
+                let selector = document.getElementsByClassName("visgrid__select--player2")[0];
+                selector.value = d["ID"];
+                onFilterChange(selector);
+            })
+
+
+        // Then add bars for people he has never beaten
+            .exit()
+            .data(neverBeaten)
+            .enter()
+            .append("rect")
+            .attr("height", height-margin.bottom-margin.top)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", margin.top)
+            .style("fill", "#4a4634")
+            .on("mouseenter", function(d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#eae4e3");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", height*0.92)
+                    .text(`${d["Name"]}: ${(d["WinPercent"]*100).toFixed(3)}% win rate against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", (height*0.92)+20)
+                    .text(`${d["GamesAgainst"]} matches played against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#4a4634");
+                svg.selectAll(".tooltip")
+                    .remove();
+            })
+            .on("click", function(d) {
+                let selector = document.getElementsByClassName("visgrid__select--player2")[0];
+                selector.value = d["ID"];
+                onFilterChange(selector);
+            });
+
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text(`${nameIDDict[player]}'s Win Rates against other players`);
+
+
+        // Axis
+        let yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
+}
+
+function lossesAgainstPlayerBarChart(panel) {
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        let player = playerFilter;
+
+        let wins = data.filter(d => d["winner_id"] === player);
+        let losses = data.filter(d => d["loser_id"] === player);
+        let games = data.filter(d => d["winner_id"] === player | d["loser_id"] === player);
+
+        let winsByOpponent =  d3.nest().key(d => d["winner_id"]).entries(losses);
+        let lossesByOpponent = d3.nest().key(d => d["loser_id"]).entries(wins);
+
+        // Aggregate Opponents
+        let idsDone = {};
+        let opponents = [];
+        let currentIndex = 0;
+
+        winsByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["LostAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst": 0,
+                    "LostAgainst": d.values.length
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        lossesByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["WonAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst":  d.values.length,
+                    "LostAgainst": 0
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        opponents.forEach(function(d) {
+            d["GamesAgainst"] = d["WonAgainst"] + d["LostAgainst"];
+            d["WinPercent"] = d["WonAgainst"]/(d["GamesAgainst"]);
+        });
+
+
+        // Filter and sort
+        let nameStats = opponents.filter(d => d["LostAgainst"] > 0);
+        nameStats = nameStats.sort(function(a, b) {return a["LostAgainst"] - b["LostAgainst"]});
+
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, d3.max(nameStats, d=>d["LostAgainst"])])
+            .range([height-margin.bottom, margin.top]);
+
+        let numberEntries = nameStats.length;
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["LostAgainst"]))
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["LostAgainst"]))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", height*0.92)
+                    .text(`${d["Name"]}: ${d["LostAgainst"]} losses against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", (height*0.92)+20)
+                    .text(`${d["GamesAgainst"]} matches played against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            })
+            .on("click", function(d) {
+                let selector = document.getElementsByClassName("visgrid__select--player2")[0];
+                selector.value = d["ID"];
+                onFilterChange(selector);
+            })
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text(`${nameIDDict[player]}'s numbers of losses against other players`);
+
+
+        // Axis
+        let yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
+}
+
+function winsAgainstPlayerBarChart(panel) {
+
+    let svg = d3.select(panel).select("svg");
+    let height = panel.offsetHeight;
+    let width = panel.offsetWidth;
+    let margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+    // let panelSvg = panel.getElementsByClassName('visgrid__panel--svg')[0];
+    // panelSvg.style.height = height*100;
+    // panelSvg.style.width = width*100;
+
+    d3.csv(dataPath).then(function(data) {
+
+        let player = playerFilter;
+
+        let wins = data.filter(d => d["winner_id"] === player);
+        let losses = data.filter(d => d["loser_id"] === player);
+        let games = data.filter(d => d["winner_id"] === player | d["loser_id"] === player);
+
+        let winsByOpponent =  d3.nest().key(d => d["winner_id"]).entries(losses);
+        let lossesByOpponent = d3.nest().key(d => d["loser_id"]).entries(wins);
+
+        // Aggregate Opponents
+        let idsDone = {};
+        let opponents = [];
+        let currentIndex = 0;
+
+        winsByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["LostAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst": 0,
+                    "LostAgainst": d.values.length
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        lossesByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["WonAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst":  d.values.length,
+                    "LostAgainst": 0
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        opponents.forEach(function(d) {
+            d["GamesAgainst"] = d["WonAgainst"] + d["LostAgainst"];
+            d["WinPercent"] = d["WonAgainst"]/(d["GamesAgainst"]);
+        });
+
+
+        // Filter and sort
+        let nameStats = opponents.filter(d => d["WonAgainst"] > 0);
+        nameStats = nameStats.sort(function(a, b) {return b["WonAgainst"] - a["WonAgainst"]});
+
+
+        // Making x-scale and y-scale
+        let x = d3.scaleBand()
+            .domain(nameStats.map(d => d["ID"]))
+            .range([margin.left, width-margin.right]);
+
+
+        let y = d3.scaleLinear()
+            .domain([0, d3.max(nameStats, d=>d["WonAgainst"])])
+            .range([height-margin.bottom, margin.top]);
+
+        let numberEntries = nameStats.length;
+
+
+        // Making bar chart
+        svg
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            .attr("height", d => height-margin.bottom - y(d["WonAgainst"]))
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
+            .attr("x", d => x(d["ID"]))
+            .attr("y", d => y(d["WonAgainst"]))
+            .style("fill", "#fcff07")
+            .on("mouseenter", function(d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#FF9C00");
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", height*0.92)
+                    .text(`${d["Name"]}: ${d["WonAgainst"]} losses against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+                svg
+                    .append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", width/3)
+                    .attr("y", (height*0.92)+20)
+                    .text(`${d["GamesAgainst"]} matches played against`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("fill", "#fcff07");
+                svg.selectAll(".tooltip")
+                    .remove();
+            })
+            .on("click", function(d) {
+                let selector = document.getElementsByClassName("visgrid__select--player2")[0];
+                selector.value = d["ID"];
+                onFilterChange(selector);
+            })
+
+        svg.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .style("font-family", "sans-serif")
+            .text(`${nameIDDict[player]}'s number of wins against other players`);
+
+
+        // Axis
+        let yAxis = g => g
+            .attr("transform", `translate(${margin.left-5}, 0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"));
+
+        svg.append("g").call(yAxis);
+    });
 }
 
 
@@ -381,6 +921,10 @@ function winPercentBarChartPanel(panel) {
             .domain([0, 1])
             .range([height-margin.bottom, margin.top]);
 
+
+        let numberEntries = nameStats.length;
+
+
         // Making bar chart
         svg
             .selectAll("rect")
@@ -388,7 +932,7 @@ function winPercentBarChartPanel(panel) {
             .enter()
             .append("rect")
             .attr("height", d => height-margin.bottom - y(d["WinPercent"]))
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["WinPercent"]))
             .style("fill", "#fcff07")
@@ -522,6 +1066,9 @@ function ATPRankPointBarChart(panel) {
             .domain([d3.min(nameStats, d=>d["RankPoints"]), d3.max(nameStats, d=>d["RankPoints"])])
             .range([height-margin.bottom, margin.top]);
 
+        let numberEntries = nameStats.length;
+
+
         // Making bar chart
         svg
             .selectAll("rect")
@@ -529,7 +1076,7 @@ function ATPRankPointBarChart(panel) {
             .enter()
             .append("rect")
             .attr("height", d => height-margin.bottom - y(d["RankPoints"]))
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["RankPoints"]))
             .style("fill", "#fcff07")
@@ -666,6 +1213,9 @@ function tourneysAttendedBarChart(panel) {
             .domain([0, d3.max(nameStats, d => d["Tourneys"].size)])
             .range([height-margin.bottom, margin.top]);
 
+        let numberEntries = nameStats.length;
+
+
         // Making bar chart
         svg
             .selectAll("rect")
@@ -673,7 +1223,7 @@ function tourneysAttendedBarChart(panel) {
             .enter()
             .append("rect")
             .attr("height", d => height-margin.bottom - y(d["Tourneys"].size))
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["Tourneys"].size))
             .style("fill", "#fcff07")
@@ -796,6 +1346,9 @@ function winNumbersBarChart(panel) {
             .domain([0, d3.max(nameStats, d => d["Wins"])])
             .range([height-margin.bottom, margin.top]);
 
+        let numberEntries = nameStats.length;
+
+
         // Making bar chart
         svg
             .selectAll("rect")
@@ -803,7 +1356,7 @@ function winNumbersBarChart(panel) {
             .enter()
             .append("rect")
             .attr("height", d => height-margin.bottom - y(d["Wins"]))
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["Wins"]))
             .style("fill", "#fcff07")
@@ -908,6 +1461,7 @@ function surfacesOverTime(panel) {
           .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), series.length).reverse())
           .unknown("#ccc");
 
+
       // Axes and legend
       let xAxis = g => g
           .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -923,7 +1477,7 @@ function surfacesOverTime(panel) {
               .attr("font-family", "sans-serif")
               .attr("font-size", 10)
               .attr("text-anchor", "end")
-              .attr("transform", `translate(${width - (margin.right/2)},${margin.top})`)
+              .attr("transform", `translate(${width - (margin.right/2)},${margin.top/2})`)
               .selectAll("g")
               .data(series.slice().reverse())
               .join("g")
@@ -1191,6 +1745,9 @@ function TourneyMinutes(panel) {
             .domain([0, d3.max(nameStats, d => d["Minutes"])])
             .range([height - margin.bottom, margin.top]);
 
+        let numberEntries = nameStats.length;
+
+
         // Now making the bar chart
         svg
             .selectAll("rect")
@@ -1201,7 +1758,7 @@ function TourneyMinutes(panel) {
 
                 return height-margin.bottom - y(d["Minutes"]);
             })
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("y", d =>  y(d["Minutes"]))
             .attr("x", function (d) {
                 // console.log(x(d["ID"]));
@@ -1361,6 +1918,8 @@ function PlayerGameTime(panel) {
             .domain([0, d3.max(nameStats, d => d["Minutes"])])
             .range([height - margin.bottom, margin.top]);
 
+        let numberEntries = nameStats.length;
+
         // Now making the bar chart
         svg
             .selectAll("rect")
@@ -1371,7 +1930,7 @@ function PlayerGameTime(panel) {
 
                 return height-margin.bottom - y(d["Minutes"]);
             })
-            .attr("width", 3)
+            .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("y", d =>  y(d["Minutes"]))
             .attr("x", function (d) {
                 // console.log(x(d["ID"]));
@@ -1447,8 +2006,9 @@ const playersPath = "data/names.csv";
 const tournamentsPath = "data/tournaments.csv";
 const nationalitiesPath = "data/nationalities.csv";
 
-let playerFilter = "";
-let playerFilter2 = "";
+let playerFilter = "103819";
+let playerFilter2 = "104925";
+
 let tournamentFilter = "";
 let nationalityFilter1 = "";
 let nationalityFilter2 = "";
