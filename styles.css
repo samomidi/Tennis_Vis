@@ -53,29 +53,32 @@
 .visgrid__dropdown-menu button{
     background-color: #3498DB;
     color: white;
-    padding: 16px;
-    font-size: 16px;
+    padding: 10px;
+    font-size: 10px;
     border: none;
     cursor: pointer;
+
 }
 
 .visgrid__dropdown-content{
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 160px;
+    min-width: 100%;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
 }
 
 .visgrid__dropdown-content button {
-    background-color: #999999;
+    background-color: #cecece;
     color: black;
-    padding: 12px 16px;
+    padding: 5px 10px;
     text-decoration: none;
     display: block;
+    min-width: 100%;
+
 }
-.visgrid__dropdown-menu button:hover, .visgrid__dropdown-menu button:focus {background-color: #2980B9; }
+.visgrid__dropdown-menu button:hover, .visgrid__dropdown-menu button:focus {background-color: #00954b;}
 .visgrid__dropdown-menu:hover, .visgrid__dropdown-menu:focus {opacity: 1; }
 .visgrid__dropdown--show {display: block; }
 
