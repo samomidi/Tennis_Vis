@@ -191,22 +191,103 @@ function makePlayerDetails(dropdown, player) {
     d3.csv(dataPath).then(function(data) {
         let wins = data.filter(d => d["winner_id"] === player);
         let losses = data.filter(d => d["loser_id"] === player);
+        let games = data.filter(d => d["winner_id"] === player | d["loser_id"] === player);
+
+        let winsByOpponent =  d3.nest().key(d => d["winner_id"]).entries(losses);
+        let lossesByOpponent = d3.nest().key(d => d["loser_id"]).entries(wins);
+
+        let tournaments = d3.nest().key(d=>d["tourney_id"]).entries(games);
+
+        // Aggregate Opponents
+        let idsDone = {};
+        let opponents = [];
+        let currentIndex = 0;
+
+        winsByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["LostAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst": 0,
+                    "LostAgainst": d.values.length
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        lossesByOpponent.forEach(function(d) {
+            if (d.key in idsDone) {
+                let id = idsDone[d.key];
+                opponents[id]["WonAgainst"] += d.values.length;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d.key,
+                    "Name": nameIDDict[d.key],
+                    "WonAgainst":  d.values.length,
+                    "LostAgainst": 0
+                };
+                opponents.push(newPlayer);
+                idsDone[d.key] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+        opponents.forEach(function(d) {
+            d["GamesAgainst"] = d["WonAgainst"] + d["LostAgainst"];
+            d["WinRateAgainst"] = d["WonAgainst"]/(d["GamesAgainst"]);
+        });
+
+        console.log(tournaments);
 
         d3.select(dropdown.parentNode)
             // Name
             .append("p")
             .text(`Name: ${name}`)
-            .append("p")
             // Win rate
-            .text(`Win Rate: ${wins.length/(wins.length+losses.length)}`);
-        // Best opponent
-        // Worst opponent
-        // Most played
-        // Most recent ranking
-        // Most recent Tournament
+            .append("p")
+            .text(`Win Rate: ${wins.length/(wins.length+losses.length)*100}%`)
+            // Number of tournaments played
+            .append("p")
+            .text(`Tournaments attended: ${tournaments.length}`)
+            // Most played
+            .append("p")
+            .text(`Most Played: ${maxBy(opponents, "GamesAgainst")["Name"]}, 
+            ${maxBy(opponents, "GamesAgainst")["GamesAgainst"]} games`)
+            // Best opponent
+            .append("p")
+            .text(`Best win rate against: ${maxBy(opponents, "WinRateAgainst")["Name"]}, 
+            ${maxBy(opponents, "WinRateAgainst")["WinRateAgainst"]*100}%`)
+            // Worst opponent
+            // Most recent ranking
     })
 }
 
+function maxBy(array, value) {
+    let currentMax = array[0];
+    array.forEach(function(d) {
+        if (d[value] > currentMax[value]) {
+            currentMax = d;
+        }
+    });
+    return currentMax;
+}
+
+function minBy(array, value) {
+    let currentMax = array[0];
+    array.forEach(function(d) {
+        if (d[value] < currentMax[value]) {
+            currentMax = d;
+        }
+    });
+    return currentMax;
+}
 
 function winPercentBarChartPanel(panel) {
     let nameStats = [];
@@ -955,6 +1036,14 @@ function TourneyMinutes(panel) {
 }
 
 
+function makeNameDict() {
+    d3.csv(playersPath).then(function(data) {
+        data.forEach(function(d) {
+            nameIDDict[d["ID"]] = d["Name"];
+        })
+    });
+}
+
 const dataPath = "data/three_years.csv";
 const playersPath = "data/names.csv";
 const tournamentsPath = "data/tournaments.csv";
@@ -965,4 +1054,6 @@ let playerFilter2 = "";
 let tournamentFilter = "";
 let nationalityFilter1 = "";
 let nationalityFilter2 = "";
+
+let nameIDDict = {};
 //d3.csv(dataPath).then(function(data) {winPercentBarChart(data)});

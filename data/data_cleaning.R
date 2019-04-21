@@ -1,5 +1,20 @@
 library(tidyverse)
-three_years <- data.frame(filter(read_csv("three_years.csv"), !grepl("Davis Cup", tourney_name, fixed=TRUE)))
+
+raw_three_years <- data.frame(read_csv("raw_three_years.csv"))
+
+three_years <- raw_three_years
+
+
+for (i in 1:nrow(three_years)) {
+  if (!is.na(three_years[i,3])) {
+    if (grepl("Davis Cup", three_years[i, 3])) {
+      three_years[i,3] <- "Davis Cup"
+      three_years[i,2] <- substr(three_years[i,2], 1, 9)
+    } 
+  }
+}
+
+#three_years <- filter(read_csv("three_years.csv"), !grepl("Davis Cup", tourney_name, fixed=TRUE))
 
 
 names <- na.omit(data.frame(matrix(ncol=2)))
@@ -64,5 +79,8 @@ write_csv(na.omit(tournaments[order(tournaments$Tournament),]), "tournaments.csv
 nationalities.data.frame <- data.frame(na.omit(nationalities[order(nationalities$Nationality),]))
 colnames(nationalities.data.frame) <- "Nationality"
 write_csv(nationalities.data.frame, "nationalities.csv")
+
+
+write_csv(three_years, "three_years.csv")
 
           
