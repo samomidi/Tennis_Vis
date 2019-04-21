@@ -24,7 +24,7 @@
 		<div class="tabs">
 			<button class="tabs__tab tabs__tab--default" onclick="openTab(event, 'visgrid--view-overview')">Overview</button>
 			<button class="tabs__tab" onclick="openTab(event, 'visgrid--view-player')">Player view</button>
-			<button class="tabs__tab" onclick="openTab(event, 'tournament-view')">Tournament view</button>
+<!--			<button class="tabs__tab" onclick="openTab(event, 'visgrid&#45;&#45;view-tournament')">Tournament view</button>-->
 <!--			<button class="tabs__tab" onclick="openTab(event, 'visgrid&#45;&#45;view-nationality')">Nationality view</button>-->
 		</div>
 		<div class="visgrid visgrid--view-overview">
@@ -131,17 +131,17 @@
 				<svg class="visgrid__panel--svg"></svg>
 			</div>
 		</div>
-		<div class="tournament-view">
-			<div class="visgrid__dropdown-menu">
-				<button class="visgrid__dropdown-menu-button" onclick="showDropdown(this.parentElement)">Choose visualisation</button>
-				<div class="visgrid__dropdown-content">
-					<button class="visgrid__dropdown-content-button" onclick="showVisualisation('MatchArrowGrid', this)">Arrow-grid</button>
-					<button class="visgrid__dropdown-content-button" onclick="showVisualisation('TournamentCircle', this)">Tournament circle</button>
-				</div>
+<!--		<div class="visgrid visgrid&#45;&#45;view-tournament">
+			<div class="visgrid__panel visgrid__panel&#45;&#45;description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;">
 			</div>
-			<svg class="visgrid__panel--svg"></svg>
+			<div class="visgrid__panel" data-panelid="2" style="grid-area: 2/ 1/ 3/ 2;">
+			</div>
+			<div class="visgrid__panel" data-panelid="3" style="grid-area: 1/ 2/ 2/ 3;">
+			</div>
+			<div class="visgrid__panel" data-panelid="4" style="grid-area: 2/ 2/ 3/ 3;">
+			</div>
 		</div>
-<!--		<div class="visgrid visgrid&#45;&#45;view-nationality">
+		<div class="visgrid visgrid&#45;&#45;view-nationality">
 			<div class="visgrid__panel visgrid__panel&#45;&#45;description" data-panelid="1" style="grid-area: 1/ 1/ 2/ 2;
 			display:grid; grid-template-rows: 1fr; grid-template-columns: 1fr 1fr; grid-gap: 8px;
 			 grid-auto-flow: column">

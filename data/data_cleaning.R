@@ -21,12 +21,12 @@ names <- na.omit(data.frame(matrix(ncol=2)))
 colnames(names) <- c("ID", "Name")
 names[1,] <- c(three_years[1, "loser_id"], three_years[1, "loser_name"])
 
-tournaments <- data.frame(matrix(ncol=3))
-colnames(tournaments) <- c("ID", "Tournament", "Year")
-tournament.id <- three_years[1, "tourney_id"]
+tournaments <- data.frame(matrix(ncol=4))
+colnames(tournaments) <- c("ID", "Tournament", "EarliestYear", "LatestYear")
 tournament_id <- strsplit(three_years[1, "tourney_id"], "-")
 tournament_year <- as.numeric(tournament_id[[1]][1])
-tournaments[1,] <- c(tournament.id, three_years[1, "tourney_name"], tournament_year)
+tournament_id <- tournament_id[[1]][2]
+tournaments[1,] <- c(tournament_id, three_years[1, "tourney_name"], tournament_year, tournament_year)
 
 nationalities <- data.frame(matrix(ncol=1))
 colnames(nationalities) <- "Nationality"
@@ -49,12 +49,17 @@ for (i in 1:nrow(three_years)) {
   }
   
   ## Tournaments
-  tournament_id <- three_years[i, "tourney_id"]
-  tournament.id.split <- strsplit(three_years[i, "tourney_id"], "-")
-  tournament.year <- as.numeric(tournament.id.split[[1]][1])
+  tournament_id <- strsplit(three_years[i, "tourney_id"], "-")
+  tournament_year <- as.numeric(tournament_id[[1]][1])
+  tournament_id <- paste(tournament_id[[1]][2:length(tournament_id[[1]])], collapse="-")
   tournament_name <- three_years[i, "tourney_name"]
   if (!(tournament_id %in% tournaments$ID)) {
-    tournaments <- na.omit(rbind(tournaments, c(tournament_id, tournament_name, tournament.year)))
+    tournaments <- na.omit(rbind(tournaments, c(tournament_id, tournament_name, tournament_year, tournament_year)))
+  } else {
+    tournaments[(tournaments$ID == tournament_id), "EarliestYear"] <-
+      min(tournament_year, tournaments[tournaments$ID == tournament_id, "EarliestYear"])
+    tournaments[tournaments$ID == tournament_id, "LatestYear"] <- 
+      min(tournament_year, tournaments[tournaments$ID == tournament_id, "LatestYear"])
   }
   
   ## Nationalities

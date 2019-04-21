@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e5f58f88-ab39-493c-9d7d-12eb8c704d96" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/data_cleaning.R" beforeDir="false" afterPath="$PROJECT_DIR$/data/data_cleaning.R" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/names.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/names.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/nationalities.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/nationalities.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/three_years.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/three_years.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/tournaments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/tournaments.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,52 +13,91 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2106">
-              <caret line="141" column="43" selection-start-line="141" selection-start-column="43" selection-end-line="141" selection-end-column="43" />
-              <folding>
-                <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/script.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="398" column="22" selection-start-line="398" selection-start-column="22" selection-end-line="398" selection-end-column="22" />
-              <folding>
-                <element signature="n#!!block;n#openTab#0" />
-                <element signature="n#!!block;n#showDropdown#0" />
-                <element signature="e#1036#1511#0" />
-                <element signature="n#!!block;n#showVisualisation#0" />
-                <element signature="n#!!block;n#makeFilterOptions#0" />
-                <element signature="n#!!block;n#onFilterChange#0" />
-                <element signature="n#!!block;n#switchPlayerFilter#0" />
-                <element signature="n#!!block;n#makePlayerDetails#0" />
-                <element signature="n#!!block;n#lossesAgainstPlayerBarChart#0" />
-                <element signature="n#!!block;n#winsAgainstPlayerBarChart#0" />
-                <element signature="n#!!block;n#maxBy#0" />
-                <element signature="n#!!block;n#minBy#0" />
-                <element signature="n#!!block;n#winPercentBarChartPanel#0" />
-                <element signature="n#!!block;n#ATPRankPointBarChart#0" />
-                <element signature="n#!!block;n#tourneysAttendedBarChart#0" />
-                <element signature="n#!!block;n#winNumbersBarChart#0" />
-                <element signature="n#!!block;n#surfacesOverTime#0" />
-                <element signature="n#!!block;n#templateFunction#0" />
-                <element signature="n#!!block;n#TourneyMinutes#0" />
-                <element signature="n#!!block;n#makeNameDict#0" />
-                <element signature="n#!!block;n#PlayerGameTime#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.43790466">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="300">
+                  <caret line="26" column="49" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="e#1822#1828#0" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#3;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#3;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/script.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1037">
+                  <caret line="63" column="22" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/styles.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Plan.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="629">
+                  <caret line="37" column="10" selection-start-line="37" selection-start-column="10" selection-end-line="37" selection-end-column="10" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/script.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2346">
+                  <caret line="223" column="18" lean-forward="true" selection-start-line="223" selection-start-column="18" selection-end-line="223" selection-end-column="18" />
+                  <folding>
+                    <element signature="n#!!block;n#openTab#0" />
+                    <element signature="n#!!block;n#showDropdown#0" />
+                    <element signature="e#1036#1511#0" />
+                    <element signature="n#!!block;n#showVisualisation#0" />
+                    <element signature="n#!!block;n#winPercentPlayerBarChartPanel#0" />
+                    <element signature="n#!!block;n#winPercentPlayerBarChart#1" />
+                    <element signature="n#!!block;n#winPercentBarChartPanel#0" />
+                    <element signature="n#!!block;n#ATPRankPointBarChart#0" />
+                    <element signature="n#!!block;n#tourneysAttendedBarChart#0" />
+                    <element signature="n#!!block;n#winNumbersBarChart#0" />
+                    <element signature="n#!!block;n#surfacesOverTime#0" />
+                    <element signature="n#!!block;n#templateFunction#0" />
+                    <element signature="n#!!block;n#Test1#0" />
+                    <element signature="n#!!block;n#TourneyMinutes#0" />
+                    <element signature="n#!!block;n#PlayerGameTime#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -82,8 +115,6 @@
       <find>ATP</find>
       <find>winner</find>
       <find>click</find>
-      <find>&lt;</find>
-      <find>nest</find>
     </findStrings>
     <replaceStrings>
       <replace>loser</replace>
@@ -96,8 +127,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/styles.css" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/script.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -115,6 +146,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -126,7 +158,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -174,18 +205,17 @@
       <option name="presentableId" value="Default" />
       <updated>1555845286038</updated>
       <workItem from="1555845300276" duration="21613000" />
-      <workItem from="1555878886963" duration="9517000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54742000" />
+    <option name="totallyTimeSpent" value="45225000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10442829" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10484721" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -219,47 +249,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/styles.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1003">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2106">
-          <caret line="141" column="43" selection-start-line="141" selection-start-column="43" selection-end-line="141" selection-end-column="43" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="85">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="398" column="22" selection-start-line="398" selection-start-column="22" selection-end-line="398" selection-end-column="22" />
+        <state relative-caret-position="1037">
+          <caret line="63" column="22" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="26" column="49" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
           <folding>
-            <element signature="n#!!block;n#openTab#0" />
-            <element signature="n#!!block;n#showDropdown#0" />
-            <element signature="e#1036#1511#0" />
-            <element signature="n#!!block;n#showVisualisation#0" />
-            <element signature="n#!!block;n#makeFilterOptions#0" />
-            <element signature="n#!!block;n#onFilterChange#0" />
-            <element signature="n#!!block;n#switchPlayerFilter#0" />
-            <element signature="n#!!block;n#makePlayerDetails#0" />
-            <element signature="n#!!block;n#lossesAgainstPlayerBarChart#0" />
-            <element signature="n#!!block;n#winsAgainstPlayerBarChart#0" />
-            <element signature="n#!!block;n#maxBy#0" />
-            <element signature="n#!!block;n#minBy#0" />
-            <element signature="n#!!block;n#winPercentBarChartPanel#0" />
-            <element signature="n#!!block;n#ATPRankPointBarChart#0" />
-            <element signature="n#!!block;n#tourneysAttendedBarChart#0" />
-            <element signature="n#!!block;n#winNumbersBarChart#0" />
-            <element signature="n#!!block;n#surfacesOverTime#0" />
-            <element signature="n#!!block;n#templateFunction#0" />
-            <element signature="n#!!block;n#TourneyMinutes#0" />
-            <element signature="n#!!block;n#makeNameDict#0" />
-            <element signature="n#!!block;n#PlayerGameTime#0" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#1822#1828#0" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

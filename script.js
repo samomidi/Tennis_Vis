@@ -7,7 +7,6 @@ function openTab(evt, tabName) {
     for (i = 0; i < tabContent.length; i++) {
         tabContent[i].style.display = "none";
     }
-    document.getElementsByClassName("tournament-view")[0].style.display = "none";
 
     // Get all elements with class="tab-link" and remove the class "active"
     tabLinks = document.getElementsByClassName("tabs__tab");
@@ -17,11 +16,7 @@ function openTab(evt, tabName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    if (tabName !== "tournament-view") {
-        document.getElementsByClassName(tabName)[0].style.display = "grid";
-    } else {
-        document.getElementsByClassName(tabName)[0].style.display = "block";
-    }
+    document.getElementsByClassName(tabName)[0].style.display = "grid";
     evt.currentTarget.className += " active";
 }
 
@@ -97,11 +92,6 @@ function showVisualisation(type, button) {
             break;
         default:
             break;
-
-        // By Tournament
-        case('MatchArrowGrid'):
-            gridArrowTournament(panel);
-            break;
     }
 }
 
@@ -141,12 +131,10 @@ function makeFilterOptions() {
     });
 
     // Tournaments
-    let tournamentsSelect = d3.select('.tournament-view')
+    let tournamentsSelect = d3.select('.visgrid--view-tournament')
+        .select('.visgrid__panel--description')
         .append('select')
         .attr('class', 'select visgrid__select--tournament')
-        .style("position", "absolute")
-        .style("right", 0)
-        .style("top", 0)
         .on('change', function() {onFilterChange(this)});
 
     d3.csv(tournamentsPath).then(function(data) {
@@ -154,8 +142,7 @@ function makeFilterOptions() {
             .selectAll('option')
             .data(data).enter()
             .append('option')
-            .text(function(d) {return d["Tournament"] + " " + d["Year"]})
-            .attr("value", d => d["ID"]);
+            .text(function(d) {return d["Tournament"]});
     });
 
     // Nationalities
@@ -216,7 +203,6 @@ function onFilterChange(selection) {
     }
 }
 
-
 function switchPlayerFilter() {
     let filterLeft = document.getElementsByClassName("visgrid__select--player")[0];
     let filterRight = document.getElementsByClassName("visgrid__select--player2")[0];
@@ -228,7 +214,6 @@ function switchPlayerFilter() {
     onFilterChange(filterLeft);
     onFilterChange(filterRight);
 }
-
 
 function makePlayerDetails(dropdown, player) {
 
@@ -331,108 +316,6 @@ function makePlayerDetails(dropdown, player) {
             ${minBy(opponents, "WinRateAgainst")["WinRateAgainst"]*100}%`)
     })
 }
-
-function arrowHover() {
-
-}
-
-function gridArrowTournament(panel) {
-    let svg = d3.select(panel).select('svg');
-    let height = panel.offsetHeight;
-    let width = panel.offsetWidth;
-    let margin = {top: 70, right: 50, bottom: 50, left: 50};
-
-    d3.csv(dataPath).then(function(data) {
-        data = data.filter(d => d["tourney_id"] === tournamentFilter);
-
-        let playersWins = d3.nest().key(d => d["winner_id"]).entries(data);
-        let playersLosses = d3.nest().key(d => d["loser_id"]).entries(data);
-        let playersGrouped = [];
-        let playersDone = {};
-        let currentIndex = 0;
-
-        playersWins.forEach(function(d) {
-            playersDone[d.key] = currentIndex;
-            currentIndex++;
-            playersGrouped.push(d);
-        });
-
-        playersLosses.forEach(function(d) {
-            if (d.key in playersDone) {
-                playersGrouped[playersDone[d.key]].values = playersGrouped[playersDone[d.key]].values.concat(d.values);
-            } else {
-                playersGrouped.push(d);
-            }
-        });
-
-        let widthToHeightRatio = width/height;
-
-        let numRows = Math.sqrt(playersGrouped.length / widthToHeightRatio);
-        let numCols = numRows * widthToHeightRatio;
-        numRows = Math.ceil(numRows);
-        numCols = Math.ceil(numCols);
-
-        let effWidth = width - margin.left - margin.right;
-        let effHeight = height - margin.top - margin.bottom;
-
-
-        let blocks =
-        svg
-            .selectAll('g')
-            .data(playersGrouped)
-            .enter()
-            .append('g')
-            .attr('transform', function(d, i) {
-                let coords = getGridPos(effWidth, effHeight, numRows, numCols, i);
-                return `translate(${margin.left+coords[0]}, ${margin.top+coords[1]})`
-            })
-            .attr('data-playerID', d => d.key);
-
-        blocks
-            .append('circle')
-            //.attr('cx', function(d,i) { return margin.left + getGridPos(effWidth, effHeight, numRows, numCols, i+1)[0] } )
-            //.attr('cy', function(d,i) { return margin.top + getGridPos(effWidth, effHeight, numRows, numCols, i+1)[1] } )
-            .attr('fill', "#5ab423")
-            .attr('r', ((effWidth/numRows)/2) - 20);
-
-
-        
-
-
-        blocks
-            .append('text')
-            .attr('y', '0.2em')
-            .attr('dy', -5)
-            .text(d => nameIDDict[d.key].split(" ")[0])
-            .style('font-size', 8)
-            .style('text-anchor', 'middle')
-            .style('font-family', 'sans-serif');
-        blocks
-            .append('text')
-            .attr('y', '0.2em')
-            .attr('dy', 5)
-            .text(d => nameIDDict[d.key].split(" ")[1])
-            .style('font-size', 8)
-            .style('text-anchor', 'middle')
-            .style('font-family', 'sans-serif');
-
-
-
-
-    })
-}
-
-function getGridPos(width, height, rows, cols, pos) {
-    let row = Math.floor(pos/cols);
-    let col = pos % cols;
-
-    let x = (width/cols)*col;
-    let y = (height/rows) * row;
-
-
-    return [x, y]
-}
-
 
 function winPercentPlayerBarChart(panel) {
 
@@ -638,7 +521,6 @@ function winPercentPlayerBarChart(panel) {
     });
 }
 
-
 function lossesAgainstPlayerBarChart(panel) {
 
     let svg = d3.select(panel).select("svg");
@@ -790,7 +672,6 @@ function lossesAgainstPlayerBarChart(panel) {
         svg.append("g").call(yAxis);
     });
 }
-
 
 function winsAgainstPlayerBarChart(panel) {
 
@@ -1692,6 +1573,111 @@ function templateFunction(panel) {
 }
 
 
+function Test1(panel) {
+    let nameStats = [];
+    let idsDone = {};
+    let currentIndex = 0;
+
+    d3.csv(dataPath).then(function(data) {
+
+        // Filling name_dict
+        data.forEach(function(d) {
+            if (d["winner_id"] in idsDone) {
+                let id = idsDone[d["winner_id"]];
+                nameStats[id]["Wins"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["winner_id"],
+                    "Name": d["winner_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 1,
+                    "Losses": 0
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["winner_id"]] = currentIndex;
+                currentIndex++;
+            }
+
+            if (d["loser_id"] in idsDone) {
+                let id = idsDone[d["loser_id"]];
+                nameStats[id]["Losses"]++;
+            }
+            else {
+                let newPlayer = {
+                    "ID": d["loser_id"],
+                    "Name": d["loser_name"],
+                    "Age":d["winner_age"],
+                    "Wins": 0,
+                    "Losses": 1
+                };
+                nameStats.push(newPlayer);
+                idsDone[d["loser_id"]] = currentIndex;
+                currentIndex++;
+            }
+        });
+
+
+
+        // for (i=0; i <nameStats.length; i++){
+        //     console.log(nameStats[i]["Name"])
+        // }
+        nameStats.forEach(function(d) {
+            d["WinPercent"] = d["Wins"] / (d["Wins"] + d["Losses"]);
+        });
+
+        console.log(nameStats);
+
+
+        // Making Histogram of ages
+        // const svg = d3.select('svg');
+        //
+        // const width = +svg.attr('width');
+        // const height = +svg.attr('height');
+        //
+        // const xValue = d => d.Name;
+        // const yValue = d => d.WinPercent;
+        // const margin = { top: 20, right: 40, bottom: 20, left: 100 };
+        // const innerWidth = width - margin.left - margin.right;
+        // const innerHeight = height - margin.top - margin.bottom;
+        //
+        // const xScale = d3.scaleBand()
+        //     .domain([nameStats.map(xValue)])
+        //     .range([0,innerWidth]);
+        //
+        // const yScale = d3.scaleLinear()
+        //     .domain([0, d3.max(nameStats, yValue)])
+        //     .range([0, innerHeight]);
+
+
+        d3.select(panel)
+            .select("svg")
+            .selectAll("rect")
+            .data(nameStats)
+            .enter()
+            .append("rect")
+            // .attr("y", d => yScale(yValue(d)) )
+            // .attr("x", 50)
+            // .attr("width", d => xScale(xValue(d)))
+            // .attr("height", d => yScale(yValue(Math.abs(d))))
+            // .attr("y", 50 )
+            // .attr("x", 50)
+            // .attr("width", 100)
+            // .attr("height", 100);
+            .attr("width", function(d) {
+                return d["WinPercent"] * 1000;
+            })
+            .attr("height", 20)
+            .attr("x", 50)
+            .attr("y", function(d, i) { // i in the index
+                return i * 50 + 50;
+            })
+
+    });
+
+}
+
+
 function TourneyMinutes(panel) {
 
     let nameStats = [];
@@ -2016,6 +2002,8 @@ function PlayerGameTime(panel) {
 }
 
 
+
+
 const dataPath = "data/three_years.csv";
 const playersPath = "data/names.csv";
 const tournamentsPath = "data/tournaments.csv";
@@ -2024,7 +2012,7 @@ const nationalitiesPath = "data/nationalities.csv";
 let playerFilter = "103819";
 let playerFilter2 = "104925";
 
-let tournamentFilter = "2018-M-DC";
+let tournamentFilter = "";
 let nationalityFilter1 = "";
 let nationalityFilter2 = "";
 
