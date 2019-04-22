@@ -417,7 +417,7 @@ function winPercentPlayerBarChart(panel) {
             .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["WinPercent"]))
-            .style("fill", "#fcff07")
+            .style("fill", "#5dbdff")
             .on("mouseenter", function(d) {
                 d3.select(this)
                     .transition()
@@ -444,7 +444,7 @@ function winPercentPlayerBarChart(panel) {
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .style("fill", "#fcff07");
+                    .style("fill", "#5dbdff");
                 svg.selectAll(".tooltip")
                     .remove();
             })
@@ -617,7 +617,7 @@ function lossesAgainstPlayerBarChart(panel) {
             .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["LostAgainst"]))
-            .style("fill", "#fcff07")
+            .style("fill", "#5dbdff")
             .on("mouseenter", function(d) {
                 d3.select(this)
                     .transition()
@@ -644,7 +644,7 @@ function lossesAgainstPlayerBarChart(panel) {
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .style("fill", "#fcff07");
+                    .style("fill", "#5dbdff");
                 svg.selectAll(".tooltip")
                     .remove();
             })
@@ -770,7 +770,7 @@ function winsAgainstPlayerBarChart(panel) {
             .attr("width", (width-margin.left-margin.right)/numberEntries)
             .attr("x", d => x(d["ID"]))
             .attr("y", d => y(d["WonAgainst"]))
-            .style("fill", "#fcff07")
+            .style("fill", "#5dbdff")
             .on("mouseenter", function(d) {
                 d3.select(this)
                     .transition()
@@ -797,7 +797,7 @@ function winsAgainstPlayerBarChart(panel) {
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .style("fill", "#fcff07");
+                    .style("fill", "#5dbdff");
                 svg.selectAll(".tooltip")
                     .remove();
             })
